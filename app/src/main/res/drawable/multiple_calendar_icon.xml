@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="20dp"
+        android:height="20dp"
+        android:drawable="@drawable/event"
+        />
+    <item
+
+        android:width="20dp"
+        android:height="20dp"
+        android:left="10dp"
+        android:top="20dp"
+        android:drawable="@drawable/todolist"
+        />
+
+
+
+
+
+
+
+
+
+
+
+</layer-list>

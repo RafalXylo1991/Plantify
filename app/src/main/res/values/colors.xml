@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="mainLogin">#2559A6</color>
+    <color name="todocolor">#C5A507</color>
+    <color name="noticecolor">#9D16B5</color>
+    <color name="delete">#E8160F</color>
+    <color name="blue">#191919</color>
+    <color name="checked">#83BC10</color>
+    <color name="taskColor">#7AB7E8</color>
+
+</resources>
