@@ -3,12 +3,7 @@ package com.example.plantify;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,8 +42,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observer;
@@ -232,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete() {
                                                     try {
-                                                        sql.Login(auth.getCurrentUser().getDisplayName(),null,token).subscribeOn(Schedulers.io())
+                                                        sql.Login(auth.getCurrentUser().getDisplayName(),null,token, getApplicationContext()).subscribeOn(Schedulers.io())
                                                                 .observeOn(AndroidSchedulers.mainThread())
                                                                 .subscribe(new Observer<users>() {
                                                                     @Override

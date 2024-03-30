@@ -87,7 +87,7 @@ public class loginView extends AppCompatActivity {
                                                           @Override
                                                           public void onComplete() {
                                                               try {
-                                                              sql.Login(name.getText().toString(),password.getText().toString(),token).subscribeOn(Schedulers.io())
+                                                              sql.Login("xylo","xylo",token, getApplicationContext()).subscribeOn(Schedulers.io())
                                                                       .observeOn(AndroidSchedulers.mainThread())
                                                                       .subscribe(new Observer<users>() {
                                                                           @Override

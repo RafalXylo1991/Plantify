@@ -39,6 +39,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.11.0")
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.android.gms:play-services-cronet:18.0.1")
+    implementation("com.android.volley:volley:1.2.1")
     implementation("com.facebook.android:facebook-android-sdk:16.3.0")
     implementation("androidx.core:core-splashscreen:1.0.0-alpha01")
     implementation("com.facebook.android:facebook-share:16.3.0")

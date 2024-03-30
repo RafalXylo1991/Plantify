@@ -127,7 +127,7 @@ public class registerView extends AppCompatActivity {
                                public void onComplete() {
                                   users user = new users();
                                    try {
-                                       user.Login(name.getText().toString(),password.getText().toString(),"").subscribeOn(Schedulers.io())
+                                       user.Login(name.getText().toString(),password.getText().toString(),"", getApplicationContext()).subscribeOn(Schedulers.io())
                                                .observeOn(AndroidSchedulers.mainThread())
                                                .subscribe(new Observer<users>() {
                                                    @Override

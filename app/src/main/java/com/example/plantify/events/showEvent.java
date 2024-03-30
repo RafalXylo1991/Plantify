@@ -267,7 +267,7 @@ public class showEvent extends AppCompatActivity {
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
+                                endTime.setText(hourOfDay + ":" + minute );
                             }
                         },hour,minutes,true);
                 timepicker.show();

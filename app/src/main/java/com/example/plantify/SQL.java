@@ -1,8 +1,11 @@
 package com.example.plantify;
 
+import android.content.Context;
 import android.util.Log;
 
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.example.plantify.objects.Event;
 import com.example.plantify.objects.Notice;
 import com.example.plantify.objects.ToDoList;
@@ -50,11 +53,13 @@ public class SQL {
         SQL.user = user;
     }
 
-    public   Observable<users> Login(String name,String password,String token) throws IOException, JSONException {
+    public   Observable<users> Login(String name, String password, String token, Context applicationContext) throws IOException, JSONException {
 
         return Observable.create(new ObservableOnSubscribe<users>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<users> emitter) throws Throwable {
+
+
                 String url2 = "http://192.168.1.158:5000/users/login";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -588,6 +593,7 @@ public class SQL {
 
     }
     public void addEventSQL(Event event, String token,int id) throws IOException, JSONException {
+        System.out.println(event);
         String url2 = "http://192.168.1.158:5000/users/addEvent";
         URL url = new URL(url2);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
