@@ -18,6 +18,7 @@ import android.widget.TimePicker;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.plantify.ExtendClass;
 import com.example.plantify.Menu;
 import com.example.plantify.R;
 import com.example.plantify.objects.Event;
@@ -35,6 +36,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -42,7 +44,7 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class showEvent extends AppCompatActivity {
+public class showEvent extends ExtendClass {
 
     Event event;
     String message;
@@ -81,10 +83,11 @@ public class showEvent extends AppCompatActivity {
         powiadomieniaSwitch.setChecked(true);
         timer.setVisibility(View.VISIBLE);
         timer.setAdapter(new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_spinner_item,user.courses));
-        SimpleDateFormat formatter =new SimpleDateFormat("dd-MM-yyyy");
+
         try {
-            Date date = formatter.parse(event.getEndDate());
-            if(date.getTime()-new Date().getTime()<0){
+            Date date = getTime().getSimpleDateFormat().parse(event.getEndDate());
+            long days_difference = TimeUnit.MILLISECONDS.toDays(date.getTime()-new Date().getTime()) % 365;
+            if(days_difference<0){
                 infodialog info = new infodialog("The event is out of date. Do you want delete it?",showEvent.this,"Confirm");
                 info.getYes().setBackgroundColor(getResources().getColor(R.color.delete));
                 info.getYes().setOnClickListener(new View.OnClickListener() {
@@ -215,7 +218,7 @@ public class showEvent extends AppCompatActivity {
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
+                                startDate.setText(getTime().DatePicerkFormatToDate(dayOfMonth,monthOfYear,year));
                             }
                         }, year, month, day);
                 picker.show();
@@ -233,7 +236,7 @@ public class showEvent extends AppCompatActivity {
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                endDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                endDate.setText(getTime().DatePicerkFormatToDate(dayOfMonth,monthOfYear,year));
                             }
                         }, year, month, day);
                 picker.show();

@@ -15,4 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "Plantify"
 include(":app")
- 
+include(":mylibrary")
+include(":mylibrary")

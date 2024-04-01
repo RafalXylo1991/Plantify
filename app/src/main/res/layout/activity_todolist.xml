@@ -6,114 +6,41 @@
     android:id="@+id/noticeDrawer"
     android:background="@drawable/kjjk"
     tools:context=".Notices.Notices">
-    <include layout="@layout/header"
 
-        android:layout_height="200dp"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
-
-        >
-
-    </include>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="1000dp">
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swiperefresh"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/flFragmentPlaceHolder"
             android:layout_width="match_parent"
-            android:layout_height="1000dp">
-
-            <FrameLayout
-                android:id="@+id/flFragmentPlaceHolder"
+            android:layout_height="match_parent" >
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1000dp" >
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:orientation="vertical">
+                <include layout="@layout/header"
 
-
-                <LinearLayout
+                    android:layout_height="200dp"
                     android:layout_width="match_parent"
-                    android:layout_height="1000dp"
-                    android:layout_margin="20dp"
-                    android:orientation="vertical">
 
+                    >
 
+                </include>
 
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:gravity="center"
+                        android:orientation="vertical">
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-
-                            android:gravity="center"
-                            android:orientation="vertical">
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
-                                <com.google.android.material.textfield.TextInputLayout
-
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-
-
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:startIconDrawable="@drawable/title">
-
-                                    <com.google.android.material.textfield.TextInputEditText
-                                        android:id="@+id/title"
-                                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                        android:layout_width="185dp"
-                                        android:layout_height="wrap_content"
-
-                                        android:hint="Title"
-
-
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent" />
-
-
-                                </com.google.android.material.textfield.TextInputLayout>
-                                <com.google.android.material.textfield.TextInputLayout
-                                    android:id="@+id/takADay"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-
-
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:startIconDrawable="@drawable/date">
-
-                                    <com.google.android.material.textfield.TextInputEditText
-                                        android:id="@+id/startDate"
-                                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                        android:layout_width="185dp"
-                                        android:layout_height="wrap_content"
-                                        android:editable="false"
-                                        android:hint="Set a day"
-
-
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent" />
-
-
-                                </com.google.android.material.textfield.TextInputLayout>
-                            </LinearLayout>
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                                android:layout_width="190dp"
-                                android:layout_height="wrap_content"
-                                android:hint="Rodzaj aktywności"
-                                app:endIconDrawable="@drawable/dropdownend"
-                                >
-
-                                <AutoCompleteTextView
-                                    android:id="@+id/toDo_kind"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-
-
-                                    />
-
-                            </com.google.android.material.textfield.TextInputLayout>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
                             <com.google.android.material.textfield.TextInputLayout
 
                                 android:layout_width="wrap_content"
@@ -122,16 +49,16 @@
 
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:startIconDrawable="@drawable/title">
 
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/tasktitle"
+                                    android:id="@+id/title"
                                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                    android:layout_width="260dp"
+                                    android:layout_width="185dp"
                                     android:layout_height="wrap_content"
 
-                                    android:hint="Enter a task"
-                                    android:gravity="center"
+                                    android:hint="Title"
 
 
                                     app:layout_constraintStart_toStartOf="parent"
@@ -139,49 +66,99 @@
 
 
                             </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/takADay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
 
 
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:startIconDrawable="@drawable/date">
 
-
-                            <ImageView
-                                android:id="@+id/addTask"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                app:srcCompat="@drawable/addlist">
-
-                            </ImageView>
-
-
-                            <LinearLayout
-                                android:layout_width="350dp"
-                                android:layout_height="480dp"
-
-                                android:orientation="vertical">
-
-                                <ListView
-                                    android:id="@+id/taskList"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
-
-                                </ListView>
-
-                                <Button
-                                    android:id="@+id/addToDoList"
-                                    android:layout_width="wrap_content"
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/startDate"
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                    android:layout_width="185dp"
                                     android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:layout_gravity="center"
-                                    android:text="Add ToDoList"></Button>
-                            </LinearLayout>
+                                    android:editable="false"
+                                    android:hint="Set a day"
+
+
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                            </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
 
-                </LinearLayout>
-            </FrameLayout>
+                        <com.google.android.material.textfield.TextInputLayout
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    </ScrollView>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
 
+
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tasktitle"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="300dp"
+                                android:layout_height="wrap_content"
+
+                                android:hint="Enter a task"
+                                android:gravity="center"
+
+
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                        <ImageView
+                            android:id="@+id/addTask"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:srcCompat="@drawable/addlist">
+
+                        </ImageView>
+
+
+                        <LinearLayout
+                            android:layout_width="350dp"
+                            android:layout_height="480dp"
+
+                            android:orientation="vertical">
+
+                            <ListView
+                                android:id="@+id/taskList"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                            </ListView>
+
+                            <Button
+                                android:id="@+id/addToDoList"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:text="Add ToDoList"></Button>
+                        </LinearLayout>
+                    </LinearLayout>
+                </ScrollView>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

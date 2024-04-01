@@ -83,7 +83,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
-public class Menu extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class Menu extends ExtendClass implements SwipeRefreshLayout.OnRefreshListener{
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
@@ -345,7 +345,9 @@ String tokenm;
                 Calendar clickedDayCalendar = eventDay.getCalendar();
                  List<String> eventslist= new ArrayList<>();
                  List<String> listList= new ArrayList<>();
-                String date = clickedDayCalendar.getTime().getDate()+"-"+(clickedDayCalendar.getTime().getMonth()+1)+"-"+(clickedDayCalendar.getTime().getYear()+1900);
+
+
+                String date = getTime().getSimpleDateFormat().format(clickedDayCalendar.getTime());
 
 
 

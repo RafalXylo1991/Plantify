@@ -32,6 +32,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.applandeo.materialcalendarview.EventDay;
 
+import com.example.plantify.Helpers.Time;
 import com.example.plantify.menuContents.Profile;
 import com.example.plantify.objects.Event;
 import com.example.plantify.objects.infodialog;
@@ -56,7 +57,7 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class Evemts extends AppCompatActivity  {
+public class Evemts extends ExtendClass  {
     private static final String ROOT_FRAGMENT_TAG = "fragmetnt";
     DrawerLayout drawerLayout;
     TextView startDate;
@@ -91,7 +92,7 @@ public class Evemts extends AppCompatActivity  {
         Intent intent = getIntent();
          user = intent.getParcelableExtra("user");
          list = intent.getParcelableArrayListExtra("events");
-        SimpleDateFormat formatter2=new SimpleDateFormat("dd-MM-yyyy");
+
 
 
 
@@ -119,13 +120,12 @@ public class Evemts extends AppCompatActivity  {
         cancel=findViewById(R.id.cancel);
         title=findViewById(R.id.EventTitle);
         desc=findViewById(R.id.desc);
-        Date currentTime = Calendar.getInstance().getTime();
-        String date = new Date().getDate()+"-"+(new Date().getMonth()+1)+"-"+(new Date().getYear()+1900);
-        startDate.setText(date);
-        endDate.setText(date);
 
-        startTime.setText(String.valueOf(currentTime.getHours()+":"+currentTime.getMinutes()));
-        endTime.setText(String.valueOf(currentTime.getHours()+":"+currentTime.getMinutes()));
+        startDate.setText(new Time().DateFormat(new Date()));
+        endDate.setText(new Time().DateFormat(new Date()));
+        startTime.setText(new Time().TimeFormat(new Date()));
+        endTime.setText(new Time().TimeFormat(new Date()));
+
         com.applandeo.materialcalendarview.CalendarView calendar2 = findViewById(R.id.menuCalendar);
          list.forEach(new Consumer<Event>() {
              @Override
@@ -133,7 +133,7 @@ public class Evemts extends AppCompatActivity  {
                  calendar = Calendar.getInstance();
                  Date date2= null;
                  try {
-                     date2 = formatter2.parse(event.getStartDate());
+                     date2 = getTime().getSimpleDateFormat().parse(event.getStartDate());
 
 
                  calendar.set(date2.getYear()+1900,date2.getMonth(), date2.getDate());
@@ -168,7 +168,7 @@ public class Evemts extends AppCompatActivity  {
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                startDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                startDate.setText(getTime().DatePicerkFormatToDate(dayOfMonth,monthOfYear,year));
                             }
                         }, year, month, day);
                 picker.show();
@@ -187,7 +187,7 @@ public class Evemts extends AppCompatActivity  {
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                endDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                endDate.setText(getTime().DatePicerkFormatToDate(dayOfMonth,monthOfYear,year));
                             }
                         }, year, month, day);
                 picker.show();
@@ -233,14 +233,13 @@ public class Evemts extends AppCompatActivity  {
             public void onClick(View v) {
                 String timer;
                 Boolean isValid=true;
-                SimpleDateFormat formatter =new SimpleDateFormat("dd-MM-yyyy");
                 Date start = null;
                 Date end = null;
                 Date today = null;
                 try {
-                    start = formatter.parse(startDate.getText().toString());
-                    end = formatter.parse(endDate.getText().toString());
-                    today =formatter.parse(new Date().getDate()+"-"+(new Date().getMonth()+1)+"-"+(new Date().getYear()+1900));
+                    start = getTime().getSimpleDateFormat().parse(startDate.getText().toString());
+                    end = getTime().getSimpleDateFormat().parse(endDate.getText().toString());
+                    today =getTime().getSimpleDateFormat().parse(new Date().getDate()+"-"+(new Date().getMonth()+1)+"-"+(new Date().getYear()+1900));
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
@@ -248,6 +247,7 @@ public class Evemts extends AppCompatActivity  {
                     title.setError("Enter the title");
                     isValid=false;
                 }
+
                 if((start.getTime()-today.getTime())<0)
                 {
                     startDate.setError("Date is wrong");

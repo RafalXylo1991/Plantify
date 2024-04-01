@@ -3,7 +3,6 @@ package com.example.plantify.todolist;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
@@ -38,7 +37,6 @@ public class todolist extends AppCompatActivity {
 
     List<Task> taskList= new ArrayList<>();
     DatePickerDialog picker;
-    AutoCompleteTextView kind;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +50,6 @@ public class todolist extends AppCompatActivity {
         ImageView addTask = findViewById(R.id.addTask);
         TextView setDay = findViewById(R.id.startDate);
         Button add = findViewById(R.id.addToDoList);
-
-         kind = findViewById(R.id.toDo_kind);
-
 
         ListView noticeList = findViewById(R.id.taskList);
         noticeList.setDivider(getDrawable(R.color.black));
@@ -130,7 +125,6 @@ public class todolist extends AppCompatActivity {
                     public void accept(Task task) {
                         JsonObject json = new JsonObject();
                         json.addProperty(task.getTitle(),task.isDone());
-                        json.addProperty("kind", kind.getText().toString());
                         tasks.add(String.valueOf(task.getId()),json);
 
 
@@ -138,52 +132,30 @@ public class todolist extends AppCompatActivity {
                 });
 
                 if(isValid){
-                    user.addToDoKind(kind.getText().toString(),user.getAccessToken(),user.getId()).subscribeOn(Schedulers.io())
-                            .subscribeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Void>() {
-                                @Override
-                                public void onSubscribe(@NonNull Disposable d) {
-
-                                }
-
-                                @Override
-                                public void onNext(@NonNull Void unused) {
-
-                                }
-
-                                @Override
-                                public void onError(@NonNull Throwable e) {
-
-                                }
-
-                                @Override
-                                public void onComplete() {
-
-                                }
-                            });
                     try {
                         user.addToDoList(new ToDoList(0,title.getText().toString(),setDay.getText().toString(),tasks,false,0), user.getAccessToken(),user.getId()).subscribeOn(Schedulers.io())
-                                 .observeOn(AndroidSchedulers.mainThread())
-                                 .subscribe(new Observer<Void>() {
-                                     @Override
-                                     public void onSubscribe(@NonNull Disposable d) {
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Observer<Void>() {
+                                    @Override
+                                    public void onSubscribe(@NonNull Disposable d) {
 
-                                     }
+                                    }
 
-                                     @Override
-                                     public void onNext(@NonNull Void unused) {
+                                    @Override
+                                    public void onNext(@NonNull Void unused) {
 
-                                     }
+                                    }
 
-                                     @Override
-                                     public void onError(@NonNull Throwable e) {
+                                    @Override
+                                    public void onError(@NonNull Throwable e) {
 
-                                     }
+                                    }
 
-                                     @Override
-                                     public void onComplete() {
-                                           //finish();
-                                     }
-                                 });
+                                    @Override
+                                    public void onComplete() {
+                                        finish();
+                                    }
+                                });
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     } catch (JSONException e) {
