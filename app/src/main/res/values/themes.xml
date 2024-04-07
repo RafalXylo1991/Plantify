@@ -7,24 +7,29 @@
     </style>
 
     <style name="Theme.Projekt" parent="Base.Theme.Projekt" />
+
     <style name="ToolBarStyle" parent="Theme.AppCompat">
         <item name="android:textColorPrimary">#2559A6</item>
         <item name="android:textColorSecondary">#2559A6</item>
         <item name="actionMenuTextColor">#2559A6</item>
 
     </style>
+
     <style name="progressbartext" parent="@style/Theme.AppCompat">
         <item name="android:textSize">12sp</item>
     </style>
+
     <style name="navigationfont" parent="android:Widget.TextView">
         <item name="android:fontFamily">@font/roboto</item>
         <item name="android:textSize">18dp</item>
     </style>
+
     <style name="field" parent="TextAppearance.AppCompat">
         <item name="android:strokeWidth">1</item>
         <item name="android:strokeColor">@color/black</item>
 
     </style>
+
     <style name="addButtons" parent="@style/Theme.AppCompat">
         <item name="cornerSize">20%</item>
         <item name="backgroundColor">@color/black</item>
@@ -33,11 +38,18 @@
 
 
     </style>
+
     <style name="Theme.AnimatedSpashScreen" parent="android:Theme.Material.Light.NoActionBar"></style>
+
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/black</item>
         <item name="postSplashScreenTheme">@style/Theme.AnimatedSpashScreen</item>
         <item name="android:windowSplashScreenAnimatedIcon">@animator/logo_animated</item>
 
+    </style>
+
+    <style name="ThemeOverlay.Plantify.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
     </style>
 </resources>

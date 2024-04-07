@@ -4,10 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.example.plantify.objects.Event;
-import com.example.plantify.objects.Notice;
+import com.example.plantify.Models.PictureNotice.Notice;
 import com.example.plantify.objects.ToDoList;
 import com.example.plantify.objects.users;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -284,6 +282,59 @@ public class SQL {
         });
     }
     public  Observable<Void> sendToken(String token, String accessToken){
+        return  Observable.create(new ObservableOnSubscribe<Void>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
+                String url2 = "http://192.168.1.158:4000/users/getNotify";
+                URL url = new URL(url2);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept","application/json");
+                conn.setRequestProperty("Authorization","Bearer "+accessToken.replace("\"", ""));
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+
+
+                JSONObject newUser = new JSONObject();
+
+
+                newUser.put("token", token);
+
+
+
+
+                DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+
+                os.writeBytes(newUser.toString());
+
+
+                os.flush();
+                os.close();
+
+                System.out.println(String.valueOf(conn.getResponseCode()));
+                System.out.println(conn.getResponseMessage());
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                // print result
+                Gson g = new Gson();
+
+                System.out.println(response.toString());
+                emitter.onComplete();
+                conn.disconnect();
+
+            }
+        });
+    }
+    public  Observable<Void> sendfile(String token, String accessToken){
         return  Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
@@ -658,6 +709,8 @@ public class SQL {
         }
 
     }
+
+
     public Observable<Void> addToDoList( ToDoList list, String token, int id) throws IOException, JSONException {
         return Observable.create(new ObservableOnSubscribe<Void>() {
             @Override

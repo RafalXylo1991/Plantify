@@ -1,19 +1,27 @@
-package com.example.plantify.noticeTypes;
+package com.example.plantify.noticeTypes.picture;
+
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.GridView;
 
+import com.example.plantify.Helpers.Fragment;
+import com.example.plantify.Menu;
 import com.example.plantify.R;
+import com.example.plantify.objects.users;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 public class pictureNotice extends Fragment {
@@ -21,14 +29,13 @@ public class pictureNotice extends Fragment {
     private static final int pic_id = 123;
     // Define the button and imageview type variable
     Button camera_open_id;
-    ImageView click_image_id;
-    public pictureNotice() {
-        // Required empty public constructor
-    }
-
+    String ROOT_FRAGMENT_TAG="root_fragment";
+    GalleryAdapter customGalleryAdapter;
+    GridView gallery;
 
     public static pictureNotice newInstance(String param1, String param2) {
         pictureNotice fragment = new pictureNotice();
+
         return fragment;
     }
 
@@ -43,13 +50,26 @@ public class pictureNotice extends Fragment {
                              Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.fragment_picture_notice, container, false);
         camera_open_id = view.findViewById(R.id.camera_button);
-        click_image_id = view.findViewById(R.id.click_image);
 
-        // Camera_open button is for open the camera and add the setOnClickListener in this button
+
+
+        ((Menu) getActivity()).disableSwipe();
+        gallery=view.findViewById(R.id.NoticeGallery);
+
+
+
+
+        List<java.io.File> pictures= Arrays.asList(File.getImages(getActivity().getApplicationContext(), getUser()));
+        for (java.io.File file: pictures
+             ) {
+            System.out.println(file.getPath());
+        }
+         customGalleryAdapter = new GalleryAdapter(getActivity(), pictures, getActivity(), getUser());
+        gallery.setAdapter(customGalleryAdapter);
         camera_open_id.setOnClickListener(v -> {
-            // Create the camera_intent ACTION_IMAGE_CAPTURE it will open the camera for capture the image
+
             Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            // Start the activity with camera_intent, and request pic id
+
             startActivityForResult(camera_intent, pic_id);
         });
 
@@ -59,14 +79,14 @@ public class pictureNotice extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Match the request 'pic id with requestCode
         if (requestCode == pic_id) {
-            // BitMap is data structure of image file which store the image in memory
             Bitmap photo = (Bitmap) data.getExtras().get("data");
-            // Set the image in imageview for display
-            click_image_id.setImageBitmap(photo);
+            File.saveToInternalStorage(photo, getActivity().getApplicationContext(), getUser());
+            loadBarContent(new pictureNotice(),1, getActivity(),  "PictureNotice");
         }
     }
 
 
 }
+
+

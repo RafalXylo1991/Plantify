@@ -4,28 +4,22 @@ import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
@@ -46,7 +40,7 @@ import com.example.plantify.events.showEvent;
 import com.example.plantify.menuContents.Profile;
 import com.example.plantify.notifications.CreateChannel;
 import com.example.plantify.objects.Event;
-import com.example.plantify.objects.Notice;
+import com.example.plantify.Models.PictureNotice.Notice;
 import com.example.plantify.objects.ToDoList;
 import com.example.plantify.objects.users;
 import com.example.plantify.services.backgroundService;
@@ -65,8 +59,6 @@ import com.tomergoldst.tooltips.ToolTipsManager;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -91,7 +83,7 @@ public class Menu extends ExtendClass implements SwipeRefreshLayout.OnRefreshLis
     Calendar calendar;
 
 
-    users user;
+
     CalendarView calendar2;
     List<EventDay> eventArray = new ArrayList<>();
 
@@ -134,7 +126,7 @@ String tokenm;
         setContentView(R.layout.activity_menu);
 
         Intent intent = getIntent();
-        user = intent.getParcelableExtra("user");
+        setUser(intent.getParcelableExtra("user"));
 
         manager = getSystemService(NotificationManager.class);
         create=new CreateChannel(manager,"cipeczka");
@@ -174,7 +166,7 @@ String tokenm;
         ListView day = findViewById(R.id.internationalDay);
         Date date = new Date();
         try {
-            user.getInternationalDay(date.getDate(), lista[date.getMonth()]).subscribeOn(Schedulers.io())
+            getUser().getInternationalDay(date.getDate(), lista[date.getMonth()]).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<List<String>>() {
                         @Override
@@ -200,7 +192,7 @@ String tokenm;
 
                         @Override
                         public void onComplete() {
-                            DropDownViewAdapter days = new DropDownViewAdapter(getApplicationContext(),   holidays[0],null,user,"InternationalDay");
+                            DropDownViewAdapter days = new DropDownViewAdapter(getApplicationContext(),   holidays[0],null, getUser(),"InternationalDay");
                             day.setAdapter(days);
                         }
                     });
@@ -218,18 +210,18 @@ String tokenm;
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent load = new Intent(getApplicationContext(), showEvent.class);
-                load.putExtra("user",user);
+                load.putExtra("user", getUser());
                 load.putExtra("event",eventss.stream().filter(event->event.getTitle().equals(parent.getItemAtPosition(position).toString())).findFirst().get());
                 startActivity(load);
             }
         });
 
         listBar =(ProgressBar)  findViewById(R.id.listProgressBar);
-        listBar.setOnClickListener(v -> displayToolTip("Unfinished To-Do-List "+user.unDoneLists+"/"+toDoLists.size(),listBar,R.color.noticecolor));
+        listBar.setOnClickListener(v -> displayToolTip("Unfinished To-Do-List "+ getUser().unDoneLists+"/"+toDoLists.size(),listBar,R.color.noticecolor));
         listTextBar = (TextView) findViewById(R.id.list_progress_text);
 
         eventBar =(ProgressBar)  findViewById(R.id.eventProgressBar);
-        eventBar.setOnClickListener(v -> displayToolTip("Current events "+user.lastEvents+"/"+eventss.size(),eventBar, R.color.mainLogin));
+        eventBar.setOnClickListener(v -> displayToolTip("Current events "+ getUser().lastEvents+"/"+eventss.size(),eventBar, R.color.mainLogin));
         eventProgressText =  (TextView) findViewById(R.id.event_progress_text);
 
         noticeBar=(ProgressBar) findViewById(R.id.noticeProgressBar);
@@ -247,13 +239,13 @@ String tokenm;
                 switch ( parent.getItemAtPosition(position).toString()){
                     case "Show all notices":
 
-                        noticesIntent.putExtra("user",user);
+                        noticesIntent.putExtra("user", getUser());
                         noticesIntent.putExtra("important",false);
                         startActivity(noticesIntent);
                         break;
                     case "Show only important":
 
-                        noticesIntent.putExtra("user",user);
+                        noticesIntent.putExtra("user", getUser());
                         noticesIntent.putExtra("important",true);
                         startActivity(noticesIntent);
                         break;
@@ -274,7 +266,7 @@ String tokenm;
 
 
 
-                intent.putExtra("user",user);
+                intent.putExtra("user", getUser());
                 intent.putExtra("list",list);
 
                 intent.putExtra("tasks",list.getTasks().toString());
@@ -301,7 +293,7 @@ String tokenm;
                 final MediaPlayer mp = MediaPlayer.create(getApplicationContext(),R.raw.delete);
                 mp.start();
                 Intent intent = new Intent(getApplicationContext(), Evemts.class);
-                intent.putExtra("user",user);
+                intent.putExtra("user", getUser());
                 intent.putParcelableArrayListExtra("events", (ArrayList<? extends Parcelable>) eventss);
                 startActivity(intent);
             }
@@ -316,7 +308,7 @@ String tokenm;
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), todolist.class);
-                intent.putExtra("user",user);
+                intent.putExtra("user", getUser());
                 startActivity(intent);
             }
         });
@@ -325,7 +317,7 @@ String tokenm;
 
         eventss.clear();;
         try {
-            loadData(user);
+            loadData( getUser());
         } catch (InterruptedException | JSONException | IOException e) {
             throw new RuntimeException(e);
         }
@@ -374,11 +366,11 @@ String tokenm;
                 }
 
 
-                DropDownViewAdapter eventAdapter = new DropDownViewAdapter(getApplicationContext(),eventss.stream().filter(event -> event.getStartDate().equals(date)).map(Event::getTitle).collect(Collectors.toList()),null,user,"Event");
+                DropDownViewAdapter eventAdapter = new DropDownViewAdapter(getApplicationContext(),eventss.stream().filter(event -> event.getStartDate().equals(date)).map(Event::getTitle).collect(Collectors.toList()),null, getUser(),"Event");
                 eventsDropDown.setAdapter(eventAdapter);
 
 
-                DropDownViewAdapter listAdapter = new DropDownViewAdapter(getApplicationContext(),toDoLists.stream().filter(toDoList -> toDoList.getDate().equals(date)).map(ToDoList::getTitle).collect(Collectors.toList()),null,user,"List");
+                DropDownViewAdapter listAdapter = new DropDownViewAdapter(getApplicationContext(),toDoLists.stream().filter(toDoList -> toDoList.getDate().equals(date)).map(ToDoList::getTitle).collect(Collectors.toList()),null, getUser(),"List");
                 listsDropDown.setAdapter(listAdapter);
 
 
@@ -431,7 +423,7 @@ String tokenm;
                         }
 
 
-                        user.logOut(user.getAccessToken()).subscribeOn(Schedulers.io())
+                        getUser().logOut( getUser().getAccessToken()).subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Observer<Void>() {
                                     @Override
@@ -552,7 +544,7 @@ String tokenm;
             serviceIntent.putParcelableArrayListExtra("event",(ArrayList<? extends Parcelable>) toNotify);
             Log.i("sdfdsf", String.valueOf(toNotify.size()));
             serviceIntent.putExtra("date",new Date(date.getTime()- time[0]));
-            serviceIntent.putExtra("user",user);
+            serviceIntent.putExtra("user", getUser());
 
                 startService(serviceIntent);
                 Log.i("service","started");
@@ -770,12 +762,12 @@ String tokenm;
         switch (type){
             case "List":
                 System.out.println("list");
-                user.unDoneLists=(toDoLists.stream().filter(check->check.isDone()==true).collect(Collectors.toList()).size());
+                getUser().unDoneLists=(toDoLists.stream().filter(check->check.isDone()==true).collect(Collectors.toList()).size());
                 procent = (toDoLists.stream().filter(check->check.isDone()==true).collect(Collectors.toList()).size()*100)/toDoLists.size();
                 break;
             case "Notice":
-             int size=   user.noticeList.stream().filter(check->check.getImportant()==true).collect(Collectors.toList()).size();
-                procent = (size*100)/user.noticeList.size();
+             int size=    getUser().noticeList.stream().filter(check->check.getImportant()==true).collect(Collectors.toList()).size();
+                procent = (size*100)/ getUser().noticeList.size();
                 bar.setProgress(procent);
                 text.setText(String.valueOf(procent));
                 break;
@@ -800,7 +792,7 @@ String tokenm;
                 });
 
                 int count =eventss.size();
-                user.lastEvents=count;
+                getUser().lastEvents=count;
                 if(count==0){
                     procent=(0);
                 }else{
@@ -817,6 +809,7 @@ String tokenm;
     public void onBackPressed() {
         newTotice notice=null;
         Profile profile=null;
+        PrintNoticePicture PrintPictureNotice=null;
 
         if( getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder) instanceof newTotice){
             notice = (newTotice) getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder);
@@ -825,12 +818,18 @@ String tokenm;
             profile = (Profile) getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder);
         }
 
+        if(getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder) instanceof PrintNoticePicture){
+
+
+            getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder).getActivity().finish();
+            PrintPictureNotice = (PrintNoticePicture) getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder);
+        }
 
 
 
-        if(!(notice != null && notice.isVisible())&&!(profile != null && profile.isVisible())) {
+        if(!(notice != null && notice.isVisible())&&!(profile != null && profile.isVisible())&&PrintPictureNotice == null) { System.out.println("cycki");
             try {
-                user.logOut(user.getAccessToken()).subscribeOn(Schedulers.io())
+                getUser().logOut( getUser().getAccessToken()).subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<Void>() {
                             @Override
@@ -890,7 +889,7 @@ String tokenm;
                 mutex[0] = new Semaphore(0);
                 finish();
                Intent intent =new Intent(Menu.this, Menu.class);
-               intent.putExtra("user",user);
+               intent.putExtra("user", getUser());
 
                startActivity( intent);
                mutex[0].release();
@@ -913,7 +912,7 @@ String tokenm;
 
         Bundle bundle=new Bundle();
         bundle.putString("date",value);
-        bundle.putParcelable("user",user);
+        bundle.putParcelable("user", getUser());
 
         fragment.setArguments(bundle);
 
@@ -979,7 +978,11 @@ String tokenm;
 
 
     }
-
+    public void disableSwipe(){
+        swipe.setEnabled(false);
+        ScrollView scrollView = findViewById(R.id.scrollbar);
+        scrollView.setEnabled(false);
+    }
 
 
 

@@ -30,10 +30,34 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    sourceSets {
+        getByName("main") {
+            res {
+                srcDirs(
+                    "src\\main\\res",
+                    "src\\main\\res\\notices",
+                    "src/main/res/layouts/notices/text",
+                    "src/main/res/layouts/notices/picture")
+            }
+        }
+    }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
+    implementation("org.wso2.apache.httpcomponents:httpclient:4.3.1.wso2v1")
 
+    implementation("com.drewnoakes:metadata-extractor:2.18.0")
+
+    implementation("com.jsibbold:zoomage:1.3.1")
+
+    implementation("commons-logging:commons-logging:1.3.1")
+    implementation("org.apache.directory.studio:org.apache.commons.io:2.4")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.12")
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("org.jsoup:jsoup:1.7.2")
     implementation("androidx.credentials:credentials:1.3.0-alpha01")
     implementation("com.github.bumptech.glide:glide:4.11.0")

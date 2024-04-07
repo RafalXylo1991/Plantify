@@ -10,6 +10,7 @@
     tools:context=".Notices.newTotice">
 
     <!-- TODO: Update blank fragment layout -->
+
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -49,8 +50,7 @@
         <FrameLayout
             android:id="@+id/noticeTypeContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
+            android:layout_height="800dp" >
 
 
 

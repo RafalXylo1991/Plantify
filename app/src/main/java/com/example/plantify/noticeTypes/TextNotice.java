@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 
 import com.example.plantify.R;
-import com.example.plantify.objects.Notice;
+import com.example.plantify.Models.PictureNotice.Notice;
 import com.example.plantify.objects.users;
 
 import org.json.JSONException;

@@ -1,40 +1,22 @@
 package com.example.plantify.Notices;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
-import android.widget.TextView;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 
+import com.example.plantify.Helpers.Fragment;
 import com.example.plantify.R;
 import com.example.plantify.noticeTypes.TextNotice;
-import com.example.plantify.noticeTypes.pictureNotice;
+import com.example.plantify.noticeTypes.picture.pictureNotice;
 import com.example.plantify.noticeTypes.soundNotice;
-import com.example.plantify.objects.Notice;
 import com.example.plantify.objects.users;
 
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class newTotice extends Fragment {
@@ -70,8 +52,7 @@ public class newTotice extends Fragment {
         // Inflate the layout for this fragment
         final String[] phone = {""};
         List<String > phones = new ArrayList<>();
-         user = getArguments().getParcelable("user");
-
+        setUser(getArguments().getParcelable("user"));
         View view = inflater.inflate(R.layout.fragment_new_totice, container, false);
 
 
@@ -81,13 +62,13 @@ public class newTotice extends Fragment {
         ImageView sound = view.findViewById(R.id.soundNotice);
 
         text.setOnClickListener(v -> {
-           loadType(new TextNotice(),1);
+            loadBarContent(new TextNotice(),1,  getActivity(),  "TextNotice");
         });
         sound.setOnClickListener(v -> {
-            loadType(new soundNotice(),1);
+            loadBarContent(new soundNotice(),1, getActivity(),  "SoundNotice");
         });
         picture.setOnClickListener(v -> {
-            loadType(new pictureNotice(),1);
+            loadBarContent(new pictureNotice(),1, getActivity(),  "PictureNotice");
         });
 
 
@@ -126,25 +107,5 @@ public class newTotice extends Fragment {
 
         return null;
     }
-    public void loadType(Fragment fragment, int flag){
-        FragmentManager manager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
 
-        Bundle bundle=new Bundle();
-        bundle.putParcelable("user",user);
-        fragment.setArguments(bundle);
-
-        if(flag==0){
-            transaction.replace(R.id.noticeTypeContainer,fragment);
-            manager.popBackStack(ROOT_FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            transaction.addToBackStack(ROOT_FRAGMENT_TAG);
-
-        }else{
-            transaction.replace(R.id.noticeTypeContainer,fragment);
-            transaction.addToBackStack(null);
-
-        }
-
-        transaction.commit();
-    }
 }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".PrintNoticePicture">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+   <LinearLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+
+       android:orientation="horizontal">
+      <TextView
+          android:id="@+id/dateOfPicture"
+          android:layout_width="wrap_content"
+          android:gravity="center"
+          android:text="fsdfdsfsdfdsf"
+          android:layout_height="match_parent">
+
+      </TextView>
+      <ImageView
+          android:id="@+id/printPictureDelete"
+          android:layout_width="60dp"
+          android:layout_height="60dp"
+          android:layout_margin="20dp"
+
+
+
+          android:src="@drawable/delete2"
+          >
+
+      </ImageView>
+   </LinearLayout>
+
+   <com.jsibbold.zoomage.ZoomageView
+       android:id="@+id/myZoomageView"
+       android:layout_width="match_parent"
+       android:layout_height="600dp"
+
+
+       app:zoomage_restrictBounds="false"
+       app:zoomage_animateOnReset="true"
+       app:zoomage_autoResetMode="UNDER"
+       app:zoomage_autoCenter="true"
+       app:zoomage_zoomable="true"
+       app:zoomage_translatable="true"
+       app:zoomage_minScale="0.6"
+       app:zoomage_maxScale="8"
+
+       />
+
+</LinearLayout>
+
+</FrameLayout>

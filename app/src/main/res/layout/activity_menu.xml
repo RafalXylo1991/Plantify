@@ -23,8 +23,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
             <ScrollView
+                android:id="@+id/scrollbar"
                     android:layout_margin="10dp"
-                android:scrollbars="none"
+
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
