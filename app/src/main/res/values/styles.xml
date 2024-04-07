@@ -1,0 +1,14 @@
+<resources>
+
+    <style name="Widget.Theme.Projekt.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
+    </style>
+    <style name="roundedImages">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">15dp</item>
+
+        <item name="color">@color/black</item>
+
+    </style>
+</resources>

@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 
+import com.example.plantify.Models.PictureNotice.Notice;
 import com.example.plantify.SQL;
 
 import java.util.ArrayList;
