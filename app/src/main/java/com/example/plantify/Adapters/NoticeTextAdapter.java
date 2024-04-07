@@ -1,4 +1,4 @@
-package com.example.plantify.Notices;
+package com.example.plantify.Adapters;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,18 +18,19 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import com.example.plantify.Notices.noticeTypes.text.printNotice;
 import com.example.plantify.R;
 import com.example.plantify.Models.PictureNotice.Notice;
 import com.example.plantify.objects.users;
 
 import java.util.List;
 
-public class listViewAdapter extends ArrayAdapter<Notice> {
+public class NoticeTextAdapter extends ArrayAdapter<Notice> {
     Boolean important;
     users user;
     FragmentManager manage;
     String ROOT_FRAGMENT_TAG="root_fragment";
-    public listViewAdapter(@NonNull Context context, List<Notice> arrayList, FrameLayout container, FragmentManager manager, users user, Boolean important) {
+    public NoticeTextAdapter(@NonNull Context context, List<Notice> arrayList, FrameLayout container, FragmentManager manager, users user, Boolean important) {
 
         super(context, 0, arrayList);
         this.manage=manager;

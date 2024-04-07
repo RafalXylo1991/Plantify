@@ -1,4 +1,4 @@
-package com.example.plantify.noticeTypes.picture;
+package com.example.plantify.Notices.noticeTypes.picture;
 
 
 import android.content.Context;

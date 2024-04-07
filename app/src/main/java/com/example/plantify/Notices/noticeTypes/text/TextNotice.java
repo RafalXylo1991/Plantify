@@ -1,4 +1,4 @@
-package com.example.plantify.noticeTypes;
+package com.example.plantify.Notices.noticeTypes.text;
 
 import android.os.Bundle;
 

@@ -1,12 +1,9 @@
-package com.example.plantify.noticeTypes.picture;
+package com.example.plantify.Notices.noticeTypes.picture;
 
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -18,7 +15,6 @@ import android.widget.GridView;
 import com.example.plantify.Helpers.Fragment;
 import com.example.plantify.Menu;
 import com.example.plantify.R;
-import com.example.plantify.objects.users;
 
 import java.util.Arrays;
 import java.util.List;

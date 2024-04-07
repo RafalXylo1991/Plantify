@@ -1,4 +1,4 @@
-package com.example.plantify.noticeTypes;
+package com.example.plantify.Notices.noticeTypes.sound;
 
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;

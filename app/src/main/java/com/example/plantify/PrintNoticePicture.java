@@ -2,7 +2,6 @@ package com.example.plantify;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,23 +17,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.drew.imaging.ImageProcessingException;
-import com.drew.imaging.jpeg.JpegMetadataReader;
-import com.drew.imaging.jpeg.JpegSegmentMetadataReader;
-import com.drew.metadata.Directory;
-import com.drew.metadata.Tag;
-import com.drew.metadata.exif.ExifReader;
-import com.drew.metadata.iptc.IptcReader;
 import com.example.plantify.Helpers.Time;
-import com.example.plantify.noticeTypes.picture.pictureNotice;
+import com.example.plantify.Notices.noticeTypes.picture.pictureNotice;
 import com.example.plantify.objects.infodialog;
 
-import org.w3c.dom.Text;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -99,7 +85,7 @@ public class PrintNoticePicture extends com.example.plantify.Helpers.Fragment {
                 info.getYes().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        com.example.plantify.noticeTypes.picture.File.deleteFromInternalStorage(path,getActivity());
+                        com.example.plantify.Notices.noticeTypes.picture.File.deleteFromInternalStorage(path,getActivity());
                         info.getDialog().cancel();
                         loadBarContent(new pictureNotice(),1, getActivity(),"dsfdsf");
                     }

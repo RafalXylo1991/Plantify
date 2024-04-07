@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/kjjk"
-    tools:context=".Notices.printNotice">
+    tools:context=".Notices.noticeTypes.text.printNotice">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

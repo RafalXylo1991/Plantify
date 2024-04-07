@@ -35,7 +35,7 @@ import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 
 import com.example.plantify.Adapters.DropDownViewAdapter;
 import com.example.plantify.Notices.Notices;
-import com.example.plantify.Notices.newTotice;
+import com.example.plantify.Notices.createNotice;
 import com.example.plantify.events.showEvent;
 import com.example.plantify.menuContents.Profile;
 import com.example.plantify.notifications.CreateChannel;
@@ -301,7 +301,7 @@ String tokenm;
         addNoitce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadBarContent(new newTotice(),0,"");
+                loadBarContent(new createNotice(),0,"");
             }
         });
         addList.setOnClickListener(new View.OnClickListener() {
@@ -807,12 +807,12 @@ String tokenm;
 
     @Override
     public void onBackPressed() {
-        newTotice notice=null;
+        createNotice notice=null;
         Profile profile=null;
         PrintNoticePicture PrintPictureNotice=null;
 
-        if( getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder) instanceof newTotice){
-            notice = (newTotice) getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder);
+        if( getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder) instanceof createNotice){
+            notice = (createNotice) getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder);
         }
         if(getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder) instanceof Profile){
             profile = (Profile) getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder);

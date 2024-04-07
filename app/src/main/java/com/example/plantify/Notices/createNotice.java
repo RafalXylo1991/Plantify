@@ -10,27 +10,27 @@ import android.widget.ImageView;
 
 import com.example.plantify.Helpers.Fragment;
 import com.example.plantify.R;
-import com.example.plantify.noticeTypes.TextNotice;
-import com.example.plantify.noticeTypes.picture.pictureNotice;
-import com.example.plantify.noticeTypes.soundNotice;
+import com.example.plantify.Notices.noticeTypes.text.TextNotice;
+import com.example.plantify.Notices.noticeTypes.picture.pictureNotice;
+import com.example.plantify.Notices.noticeTypes.sound.soundNotice;
 import com.example.plantify.objects.users;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class newTotice extends Fragment {
+public class createNotice extends Fragment {
 
     String ROOT_FRAGMENT_TAG="root_fragment";
     String message;
     users user;
-    public newTotice() {
+    public createNotice() {
         // Required empty public constructor
     }
 
 
-    public static newTotice newInstance(String param1, String param2) {
-        newTotice fragment = new newTotice();
+    public static createNotice newInstance(String param1, String param2) {
+        createNotice fragment = new createNotice();
         Bundle args = new Bundle();
 
         fragment.setArguments(args);

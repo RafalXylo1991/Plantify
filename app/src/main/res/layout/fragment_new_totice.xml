@@ -7,7 +7,7 @@
     android:background="@drawable/kjjk"
     android:id="@+id/newNoticeFragment"
 
-    tools:context=".Notices.newTotice">
+    tools:context=".Notices.createNotice">
 
     <!-- TODO: Update blank fragment layout -->
 

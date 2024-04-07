@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
+import com.example.plantify.Adapters.NoticeTextAdapter;
 import com.example.plantify.MainActivity;
 import com.example.plantify.R;
 import com.example.plantify.menuContents.Profile;
@@ -146,7 +147,7 @@ public class Notices extends AppCompatActivity {
                      public void onComplete() {
                          FrameLayout container = findViewById(R.id.flFragmentPlaceHolder);
                          FragmentManager manager = getSupportFragmentManager();
-                         listViewAdapter numbersArrayAdapter = new listViewAdapter(getApplicationContext(), notices,container,manager,user,important);
+                         NoticeTextAdapter numbersArrayAdapter = new NoticeTextAdapter(getApplicationContext(), notices,container,manager,user,important);
 
                          ListView noticeList = findViewById(R.id.listView);
 

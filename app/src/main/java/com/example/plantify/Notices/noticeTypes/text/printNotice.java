@@ -1,4 +1,4 @@
-package com.example.plantify.Notices;
+package com.example.plantify.Notices.noticeTypes.text;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
