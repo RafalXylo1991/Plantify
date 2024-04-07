@@ -36,6 +36,7 @@ import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.example.plantify.Adapters.DropDownViewAdapter;
 import com.example.plantify.Notices.Notices;
 import com.example.plantify.Notices.createNotice;
+import com.example.plantify.Notices.noticeTypes.sound.noticesList;
 import com.example.plantify.events.showEvent;
 import com.example.plantify.menuContents.Profile;
 import com.example.plantify.notifications.CreateChannel;
@@ -248,6 +249,10 @@ String tokenm;
                         noticesIntent.putExtra("user", getUser());
                         noticesIntent.putExtra("important",true);
                         startActivity(noticesIntent);
+                        break;
+                    case "Pokaż notatki głosowe":
+
+                        loadBarContent(new noticesList(), 0, "dfdsf" );
                         break;
                 }
 
@@ -561,6 +566,7 @@ String tokenm;
 
         not.add("Show all notices");
         not.add("Show only important");
+        not.add("Pokaż notatki głosowe");
         DropDownViewAdapter notices = new DropDownViewAdapter(getApplicationContext(),not,null,user,"Notice");
 
         user.noticeList=new ArrayList<>();
@@ -915,14 +921,18 @@ String tokenm;
         bundle.putParcelable("user", getUser());
 
         fragment.setArguments(bundle);
+        if(flag==1) {
 
-        if(flag==0){
-            transaction.replace(R.id.flFragmentPlaceHolder,fragment);
+            transaction.add(R.id.MenuFragmentPlaceHolder,fragment);
+            manager.popBackStack(ROOT_FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            transaction.addToBackStack(ROOT_FRAGMENT_TAG);
+        }else if(flag==0){
+            transaction.replace(R.id.MenuFragmentPlaceHolder,fragment);
             manager.popBackStack(ROOT_FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             transaction.addToBackStack(ROOT_FRAGMENT_TAG);
 
         }else{
-            transaction.replace(R.id.flFragmentPlaceHolder,fragment);
+            transaction.replace(R.id.MenuFragmentPlaceHolder,fragment);
             transaction.addToBackStack(null);
 
         }

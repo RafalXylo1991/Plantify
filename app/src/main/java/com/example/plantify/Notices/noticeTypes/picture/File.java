@@ -52,7 +52,7 @@ public class File {
 
     private static final String ALLOWED_CHARACTERS ="0123456789qwertyuiopasdfghjklzxcvbnm";
 
-    private static String getRandomString(final int sizeOfRandomString)
+    public static String getRandomString(final int sizeOfRandomString)
     {
         final Random random=new Random();
         final StringBuilder sb=new StringBuilder(sizeOfRandomString);

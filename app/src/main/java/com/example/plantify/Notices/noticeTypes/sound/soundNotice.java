@@ -3,6 +3,8 @@ package com.example.plantify.Notices.noticeTypes.sound;
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
+import static com.example.plantify.Notices.noticeTypes.picture.File.getRandomString;
+
 import android.Manifest;
 import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
@@ -12,7 +14,6 @@ import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
 import android.os.Handler;
@@ -25,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.plantify.Helpers.Fragment;
 import com.example.plantify.MainActivity;
 import com.example.plantify.R;
 import com.google.firebase.auth.ActionCodeUrl;
@@ -41,11 +43,12 @@ public class soundNotice extends Fragment {
 
 
     public static final int RequestPermissionCode = 1;
-
+    Runnable run;
     String path =null;
     MediaPlayer mediaPlayer ;
-    MediaRecorder mediaRecorder;
+    MediaRecorder mediaRecorder = new MediaRecorder();
     TextView time;
+    java.io.File mypath;
     File file;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,7 @@ public class soundNotice extends Fragment {
         ImageView stopRec= view.findViewById(R.id.stopRec);
         ImageView startPlay= view.findViewById(R.id.startPlay);
         ImageView stopPlay= view.findViewById(R.id.stopPlay);
+        TextView title= view.findViewById(R.id.soundNoticeTitle);
         Calendar calendar = Calendar.getInstance();
 
         Date date = new Date();
@@ -75,9 +79,12 @@ public class soundNotice extends Fragment {
         stopRec.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 mediaRecorder.stop();
-                  stopPlay.setVisibility(View.VISIBLE);
-                  startPlay.setVisibility(View.VISIBLE);
+                h.removeCallbacks(run);
+                stopRec.setVisibility(View.GONE);
+                stopPlay.setVisibility(View.VISIBLE);
+                startPlay.setVisibility(View.VISIBLE);
 
                 Toast.makeText(getActivity(), "Recording Completed",
                         Toast.LENGTH_LONG).show();
@@ -92,12 +99,14 @@ public class soundNotice extends Fragment {
 
                 mediaPlayer = new MediaPlayer();
                 try {
-                    mediaPlayer.setDataSource(file.getPath());
+                    mediaPlayer.setDataSource(mypath.getPath());
                     mediaPlayer.prepare();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
+
+                System.out.println("cipeczka");
                 mediaPlayer.start();
                 Toast.makeText(getActivity(), "Recording Playing",
                         Toast.LENGTH_LONG).show();
@@ -112,7 +121,9 @@ public class soundNotice extends Fragment {
                 if(mediaPlayer != null){
                     mediaPlayer.stop();
                     mediaPlayer.release();
-                    MediaRecorderReady(file.getPath());
+                    System.out.println(mypath.getPath());
+                    System.out.println("cipeczka");
+                    MediaRecorderReady(mypath.getPath());
                 }
             }
         });
@@ -120,71 +131,73 @@ public class soundNotice extends Fragment {
         startRec.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        stopRec.setVisibility(View.VISIBLE);
-                        h.postDelayed(new Runnable()
-                        {
-
-
-                            @Override
-                            public void run()
-                            {
+                         run = new Runnable() {
+                             @Override
+                            public void run() {
                                 // do stuff then
                                 // can call h again after work!
-                                date.setSeconds(date.getSeconds()+1);
+                                date.setSeconds(date.getSeconds() + 1);
 
                                 String hours;
-                                if(date.getMinutes()<=9){
-                                    hours ="0"+ String.valueOf(date.getHours());
-                                }else{
+                                if (date.getMinutes() <= 9) {
+                                    hours = "0" + String.valueOf(date.getHours());
+                                } else {
                                     hours = String.valueOf(date.getHours());
                                 }
 
                                 String min;
-                                if(date.getMinutes()<=9){
-                                    min ="0"+ String.valueOf(date.getMinutes());
-                                }else{
+                                if (date.getMinutes() <= 9) {
+                                    min = "0" + String.valueOf(date.getMinutes());
+                                } else {
                                     min = String.valueOf(date.getMinutes());
                                 }
 
                                 String sec;
-                                if(date.getSeconds()<=9){
-                                    sec ="0"+ String.valueOf(date.getSeconds());
-                                }else{
+                                if (date.getSeconds() <= 9) {
+                                    sec = "0" + String.valueOf(date.getSeconds());
+                                } else {
                                     sec = String.valueOf(date.getSeconds());
                                 }
-                                time.setText(hours+":"+min+":"+sec);
+                                time.setText(hours + ":" + min + ":" + sec);
 
                                 h.postDelayed(this, 1000);
                             }
-                        }, 0);
-                if(checkPermission()) {
+                        };
 
-                    ContextWrapper contextWrapper=new ContextWrapper(getActivity());
-                    File directory = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
-                    file = new File(directory,"dfdsfdsf.mp3");
+                         if(!title.getText().toString().equals("")){
 
-                    MediaRecorderReady(file.getPath());
+                            stopRec.setVisibility(View.VISIBLE);
+                            h.postDelayed(run, 0);
+                            if(checkPermission()) {
 
-                    try {
-                        mediaRecorder.prepare();
-                        mediaRecorder.start();
-                    } catch (IllegalStateException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                                ContextWrapper cw = new ContextWrapper(getActivity());
+                                java.io.File directory = cw.getDir(String.valueOf(getUser().getId())+"_audio", getActivity().MODE_PRIVATE);
+                                mypath=new java.io.File(directory,title.getText().toString()+".3gp");
+                                MediaRecorderReady(mypath.getPath());
+
+                                try {
+                                    mediaRecorder.prepare();
+                                    mediaRecorder.start();
+                                } catch (IllegalStateException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
 
 
 
-                    Toast.makeText(getActivity(), "Recording started",
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    requestPermission();
-                }
+                                Toast.makeText(getActivity(), "Rozpoczęto nagrywanie",
+                                        Toast.LENGTH_LONG).show();
+                            } else {
+                                requestPermission();
+                            }
+                        }
+
             }
         });
+
 
 
         return view;
