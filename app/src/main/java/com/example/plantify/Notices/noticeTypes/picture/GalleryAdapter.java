@@ -4,7 +4,6 @@ package com.example.plantify.Notices.noticeTypes.picture;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.health.connect.datatypes.Metadata;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,24 +14,11 @@ import android.widget.ImageView;
 import androidx.fragment.app.FragmentActivity;
 
 
-import com.drew.imaging.ImageProcessingException;
-import com.drew.imaging.jpeg.JpegMetadataReader;
-import com.drew.imaging.jpeg.JpegSegmentMetadataReader;
-import com.drew.metadata.Directory;
-import com.drew.metadata.Tag;
-import com.drew.metadata.exif.ExifReader;
-import com.drew.metadata.iptc.IptcReader;
 import com.example.plantify.Helpers.Fragment;
-import com.example.plantify.PrintNoticePicture;
 import com.example.plantify.R;
 import com.example.plantify.objects.users;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 
 

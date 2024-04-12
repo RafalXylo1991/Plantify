@@ -919,23 +919,14 @@ public class SQL {
                 in.close();
 
 
-                JsonObject jsonObject = new JsonParser().parse(response.toString()).getAsJsonObject();
-
-                int error= Integer.valueOf(jsonObject.get("status").toString());
-                System.out.println(jsonObject.get("status").toString());
-                System.out.println("error");
-                if(error==0)
-                {
+                JsonArray jsonObject = new JsonParser().parse(response.toString()).getAsJsonArray();
 
 
-                }else {
+
                     conn.disconnect();
-                    JsonArray json= jsonObject.getAsJsonArray("events");
-                    System.out.println(json.size());
-                    if(json.size()==0){
-                        emitter.onComplete();
-                    }
-                    Iterator<JsonElement> iterator = json.iterator();
+
+
+                    Iterator<JsonElement> iterator = jsonObject.iterator();
                     Event event;
                     while (iterator.hasNext()) {
                         JsonElement name = iterator.next();
@@ -963,7 +954,7 @@ public class SQL {
 
 
 
-                }
+
 
 
 

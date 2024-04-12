@@ -120,7 +120,7 @@ public class soundNotice extends Fragment {
 
                 if(mediaPlayer != null){
                     mediaPlayer.stop();
-                    mediaPlayer.release();
+                    mediaPlayer.reset();
                     System.out.println(mypath.getPath());
                     System.out.println("cipeczka");
                     MediaRecorderReady(mypath.getPath());
@@ -193,7 +193,9 @@ public class soundNotice extends Fragment {
                             } else {
                                 requestPermission();
                             }
-                        }
+                        }else{
+                             title.setError("Nazwa notatki jest wymagana");
+                         }
 
             }
         });

@@ -12,6 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.fragment.app.FragmentManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.plantify.Helpers.Fragment;
 import com.example.plantify.Menu;
 import com.example.plantify.R;
@@ -25,7 +29,7 @@ public class pictureNotice extends Fragment {
     private static final int pic_id = 123;
     // Define the button and imageview type variable
     Button camera_open_id;
-    String ROOT_FRAGMENT_TAG="root_fragment";
+
     GalleryAdapter customGalleryAdapter;
     GridView gallery;
 
@@ -48,8 +52,6 @@ public class pictureNotice extends Fragment {
         camera_open_id = view.findViewById(R.id.camera_button);
 
 
-
-        ((Menu) getActivity()).disableSwipe();
         gallery=view.findViewById(R.id.NoticeGallery);
 
 

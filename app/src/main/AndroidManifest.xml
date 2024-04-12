@@ -72,7 +72,8 @@
             android:exported="false" />
         <activity
             android:name=".Menu"
-            android:exported="false" />
+            android:exported="false"
+          />
         <activity
             android:name=".login.loginView"
             android:exported="false" />

@@ -3,12 +3,14 @@ package com.example.plantify.Helpers;
 
 
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.plantify.R;
 import com.example.plantify.objects.infodialog;
@@ -19,13 +21,27 @@ public  class Fragment extends androidx.fragment.app.Fragment {
     private static users user = new users();
     private static File File = new File();
 
+    public static SwipeRefreshLayout getSwipe() {
+        return swipe;
+    }
+
+    public static void setSwipe(SwipeRefreshLayout swipe) {
+        Fragment.swipe = swipe;
+    }
+
+    public static SwipeRefreshLayout swipe ;
+    private static MediaPlayer  mediaPlayer = new MediaPlayer();
+
+    public static MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
+    }
 
 
     public static users getUser() {
         return user;
     }
 
-    public static void setUser(users user) {
+    public  void setUser(users user) {
         Fragment.user = user;
     }
 

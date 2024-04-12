@@ -5,32 +5,35 @@
     android:layout_height="match_parent"
     android:id="@+id/noticeDrawer"
     tools:context=".Notices.Notices">
-    <LinearLayout
-        android:layout_width="match_parent"
+    <include
+        layout="@layout/app_bar"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
-
-            <FrameLayout
-                android:id="@+id/flFragmentPlaceHolder"
+        android:layout_width="match_parent"
+        />
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/flFragmentPlaceHolder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-                <LinearLayout
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <include layout="@layout/notice_header"
+                    android:layout_marginTop="50dp"
+                    android:layout_height="200dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-                    <include layout="@layout/notice_header"
-                        android:layout_marginTop="50dp"
-                        android:layout_height="200dp"
-                        android:layout_width="match_parent"
 
-                        >
+                    >
 
-                    </include>
+                </include>
 
-
-
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -83,16 +86,16 @@
                         </Button>
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="350dp"
                             android:layout_height="300dp"
 
                             android:orientation="vertical">
 
                             <ListView
+                                android:layout_margin="20dp"
                                 android:id="@+id/printtaskList"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp">
+                                android:layout_height="wrap_content">
 
                             </ListView>
                             <Button
@@ -108,15 +111,13 @@
                         </LinearLayout>
 
                     </LinearLayout>
+                </ScrollView>
 
+            </LinearLayout>
 
-                </LinearLayout>
+        </FrameLayout>
 
-            </FrameLayout>
-
-
-
-    </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

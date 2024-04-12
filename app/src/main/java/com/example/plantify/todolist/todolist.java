@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.plantify.ExtendClass;
 import com.example.plantify.R;
 import com.example.plantify.objects.Task;
 import com.example.plantify.objects.ToDoList;
@@ -33,7 +34,7 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class todolist extends AppCompatActivity {
+public class todolist extends ExtendClass {
 
     List<Task> taskList= new ArrayList<>();
     DatePickerDialog picker;
@@ -89,7 +90,7 @@ public class todolist extends AppCompatActivity {
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                setDay.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                setDay.setText(getTime().DatePicerkFormatToDate(dayOfMonth,monthOfYear,year));
 
                             }
                         }, year, month, day);

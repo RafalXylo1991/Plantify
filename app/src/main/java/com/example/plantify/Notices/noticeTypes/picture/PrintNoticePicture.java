@@ -1,4 +1,4 @@
-package com.example.plantify;
+package com.example.plantify.Notices.noticeTypes.picture;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.plantify.Helpers.Time;
-import com.example.plantify.Notices.noticeTypes.picture.pictureNotice;
+import com.example.plantify.R;
 import com.example.plantify.objects.infodialog;
 
 import java.util.Date;

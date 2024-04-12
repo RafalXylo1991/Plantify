@@ -1,7 +1,6 @@
 package com.example.plantify.todolist;
 
 import android.content.Context;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +10,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,13 +28,8 @@ import com.google.gson.JsonObject;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.function.Consumer;
-
-
 import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -47,7 +39,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class TaskAdapter extends ArrayAdapter<Task> {
-   todolist_print activity;
+    todolist_print activity;
     Context context;
     TextView progressText;
     ProgressBar progress;
@@ -60,13 +52,12 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
     List<Task> arrayList;
     CheckBox check;
-    TextView kind;
-    Boolean isTimerStart=false;
-    Button save;
-    LinearLayout startStop;
-    Handler h;
 
-    int x;
+
+    Button save;
+
+
+
 
     public TaskAdapter(@NonNull Context context, List<Task> arrayList, FrameLayout container, FragmentManager manager, users user, ListView noticeList, ToDoList lista, ProgressBar progress, TextView progressText, Button save, todolist_print todolistPrint) {
 
@@ -92,13 +83,11 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
 
         View currentItemView = convertView;
-        x=1;
 
 
 
 
 
-        Task currentNumberPosition = getItem(position);
 
 
         if (currentItemView == null) {
@@ -106,191 +95,98 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         }
 
 
+        Task currentNumberPosition = getItem(position);
 
-        kind=currentItemView.findViewById(R.id.taskKind);
-
-        ImageView timer = currentItemView.findViewById(R.id.timer);
-
-        timer.setBackground(context.getDrawable(R.drawable.timer));
-
-
-        final android.os.Handler h = new android.os.Handler();
-        Date date = new Date();
-        date.setHours(0);
-        date.setMinutes(0);
-        date.setSeconds(0);
-
-        timer.setOnClickListener(new View.OnClickListener() {
-
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Handler handler = new Handler();
-                View view = (View) v.getParent().getParent();
-                View view2 = (View) v.getParent();
-                TextView time = view.findViewById(R.id.timeView);
-                startStop=view.findViewById(R.id.startStopContainer);
-                TextView start = view.findViewById(R.id.field);
-                if(!isTimerStart){
-                    startStop.setVisibility(View.VISIBLE);
-                    start.setText("Tap to stop time");
-                     isTimerStart=true;
+                lista.setDone(true);
+                JsonObject jsonObject = new JsonObject();
+                arrayList.forEach(new Consumer<Task>() {
+                    @Override
+                    public void accept(Task task) {
+                        JsonObject json = new JsonObject();
+                        json.addProperty(task.getTitle(), task.isDone());
+                        jsonObject.add(String.valueOf(task.getId()), json);
 
-                    Runnable updateData = new Runnable(){
 
-                        @Override
-                        public void run() {
+                    }
+                });
+                Log.i("json", String.valueOf(jsonObject));
+                lista.setTasks(jsonObject);
 
-                            date.setSeconds(date.getSeconds()+1);
 
-                            String hours;
-                            if(date.getMinutes()<=9){
-                                hours ="0"+ String.valueOf(date.getHours());
-                            }else{
-                                hours = String.valueOf(date.getHours());
-                            }
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
 
-                            String min;
-                            if(date.getMinutes()<=9){
-                                min ="0"+ String.valueOf(date.getMinutes());
-                            }else{
-                                min = String.valueOf(date.getMinutes());
-                            }
-
-                            String sec;
-                            if(date.getSeconds()<=9){
-                                sec ="0"+ String.valueOf(date.getSeconds());
-                            }else{
-                                sec = String.valueOf(date.getSeconds());
-                            }
-                            time.setText(hours+":"+min+":"+sec);
-                            handler.postDelayed(this, 1000);
+                        if(setProgresss()==100){
+                            lista.setDone(true);
+                        }else{
+                            lista.setDone(false);
                         }
-                    };
-                    handler.postDelayed(updateData,0);
+
+                    }
+                });
+                if(arrayList.stream().filter(element->element.isDone()==true).collect(Collectors.toList()).size()<arrayList.size()){
+                    lista.setDone(false);
                 }
-                else {
+                try {
+                    user.updateList(lista, user.getAccessToken(), lista.getId()).subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<Void>() {
+                                @Override
+                                public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
 
+                                }
+
+                                @Override
+                                public void onNext(@io.reactivex.rxjava3.annotations.NonNull Void unused) {
+
+                                }
+
+                                @Override
+                                public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onComplete() {
+                                    activity.finish();
+                                }
+                            });
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
                 }
 
 
-
-                }
-
-
-
-        });
-         save.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 lista.setDone(true);
-                 JsonObject jsonObject = new JsonObject();
-                 arrayList.forEach(new Consumer<Task>() {
-                     @Override
-                     public void accept(Task task) {
-                         JsonObject json = new JsonObject();
-                         json.addProperty(task.getTitle(), task.isDone());
-                         json.addProperty("kind", task.getKind());
-                         jsonObject.add(String.valueOf(task.getId()), json);
-
-
-                     }
-                 });
-                 Log.i("json", String.valueOf(jsonObject));
-                 lista.setTasks(jsonObject);
-
-
-                             activity.runOnUiThread(new Runnable() {
-                                 @Override
-                                 public void run() {
-
-                                     if(setProgresss()==100){
-                                         lista.setDone(true);
-                                     }else{
-                                         lista.setDone(false);
-                                     }
-
-                                 }
-                             });
-
-                             if(arrayList.stream().filter(element->element.isDone()==true).collect(Collectors.toList()).size()<arrayList.size()){
-                                 lista.setDone(false);
-                             }
-                 try {
-                     user.updateList(lista, user.getAccessToken(), lista.getId()).subscribeOn(Schedulers.io())
-                             .observeOn(AndroidSchedulers.mainThread())
-                             .subscribe(new Observer<Void>() {
-                                 @Override
-                                 public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-
-                                 }
-
-                                 @Override
-                                 public void onNext(@io.reactivex.rxjava3.annotations.NonNull Void unused) {
-
-                                 }
-
-                                 @Override
-                                 public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-
-                                 }
-
-                                 @Override
-                                 public void onComplete() {
-                                     activity.finish();
-                                 }
-                             });
-                 } catch (IOException e) {
-                     throw new RuntimeException(e);
-                 } catch (JSONException e) {
-                     throw new RuntimeException(e);
-                 }
-
-
-             }});
+            }});
         title = currentItemView.findViewById(R.id.askTitle);
+
         title.setText(currentNumberPosition.getTitle());
-        kind.setText(currentNumberPosition.getKind());
 
-
-
-
-
-         check = currentItemView.findViewById(R.id.checkbox);
-     check.setChecked(currentNumberPosition.isDone());
-        View vieww= (View) check.getParent();
-        LinearLayout liner =vieww.findViewById(R.id.taskContainer);
-
-     if(currentNumberPosition.isDone()){
-
-         liner.setBackgroundColor(context.getResources().getColor(R.color.checked));
-     }else{
-
-         liner.setBackgroundColor(context.getResources().getColor(R.color.taskColor));
-     }
+        check = currentItemView.findViewById(R.id.checkbox);
+        check.setChecked(currentNumberPosition.isDone());
 
         check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 View view= (View) buttonView.getParent();
-                TextView cipka  = view.findViewById(R.id.askTitle);
+                TextView cipka = view.findViewById(R.id.askTitle);
                 if(!currentNumberPosition.isDone()){
                     if(isChecked&&cipka.getText().toString().equals(currentNumberPosition.getTitle())){
                         arrayList.get(position).setDone(true);
-                        liner.setBackgroundColor(context.getResources().getColor(R.color.checked));
-
+                        cipka.setText("Done");
                         progress.setProgress(setProgresss());
                     }else{
                         arrayList.get(position).setDone(false);
-                        liner.setBackgroundColor(context.getResources().getColor(R.color.checked));
                         progress.setProgress(setProgresss());
-
                     }
                 }
                 else{
-                    System.out.println(isChecked);
-                    System.out.println(cipka.getText().toString().equals(currentNumberPosition.getTitle()));
                     if(!isChecked&&cipka.getText().toString().equals(currentNumberPosition.getTitle())){
-                        liner.setBackgroundColor(context.getResources().getColor(R.color.taskColor));
                         arrayList.get(position).setDone(false);
                         cipka.setText(currentNumberPosition.getTitle());
                         progress.setProgress(setProgresss());
@@ -301,7 +197,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
 
 
-             boolean is= arrayList.stream().allMatch(check->check.isDone()==true);
+                boolean is= arrayList.stream().allMatch(check->check.isDone()==true);
 
 
 
@@ -312,7 +208,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         });
 
 
-           progress.setProgress(setProgresss());
+        progress.setProgress(setProgresss());
 
 
 
@@ -324,15 +220,13 @@ public class TaskAdapter extends ArrayAdapter<Task> {
     private int setProgresss() {
         int procent = (arrayList.stream().filter(check->check.isDone()==true).collect(Collectors.toList()).size()*100)/arrayList.size();
         progressText.setText(procent+"%");
-                  lista.setProgress(procent);
+        lista.setProgress(procent);
         if(procent==100){
             progressText.setTextColor(context.getResources().getColor(R.color.checked));
         }else{
             progressText.setTextColor(context.getResources().getColor(R.color.black));
         }
-        System.out.println(procent);
         return procent;
-
     }
 
 }

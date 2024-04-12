@@ -36,6 +36,8 @@ import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.example.plantify.Adapters.DropDownViewAdapter;
 import com.example.plantify.Notices.Notices;
 import com.example.plantify.Notices.createNotice;
+import com.example.plantify.Notices.noticeTypes.picture.PrintNoticePicture;
+import com.example.plantify.Notices.noticeTypes.picture.pictureNotice;
 import com.example.plantify.Notices.noticeTypes.sound.noticesList;
 import com.example.plantify.events.showEvent;
 import com.example.plantify.menuContents.Profile;
@@ -43,6 +45,7 @@ import com.example.plantify.notifications.CreateChannel;
 import com.example.plantify.objects.Event;
 import com.example.plantify.Models.PictureNotice.Notice;
 import com.example.plantify.objects.ToDoList;
+import com.example.plantify.objects.infodialog;
 import com.example.plantify.objects.users;
 import com.example.plantify.services.backgroundService;
 import com.example.plantify.services.undefinedItemsService;
@@ -80,7 +83,7 @@ public class Menu extends ExtendClass implements SwipeRefreshLayout.OnRefreshLis
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
-    SwipeRefreshLayout swipe;
+
     Calendar calendar;
 
 
@@ -128,7 +131,8 @@ String tokenm;
 
         Intent intent = getIntent();
         setUser(intent.getParcelableExtra("user"));
-
+        getFragment().setUser(intent.getParcelableExtra("user"));
+        getFragment().setSwipe((SwipeRefreshLayout) findViewById(R.id.swiperefreshMenu));
         manager = getSystemService(NotificationManager.class);
         create=new CreateChannel(manager,"cipeczka");
 
@@ -142,7 +146,7 @@ String tokenm;
 
 
         toolbar=(Toolbar) findViewById(R.id.toolbar);
-        swipe = (SwipeRefreshLayout) findViewById(R.id.swiperefreshMenu);
+
         addEvent =(ImageView) findViewById(R.id.addEvent);
         addNoitce =(ImageView) findViewById(R.id.addNotice);
         addList = (ImageView)findViewById(R.id.addList);
@@ -252,7 +256,7 @@ String tokenm;
                         break;
                     case "Pokaż notatki głosowe":
 
-                        loadBarContent(new noticesList(), 0, "dfdsf" );
+                        loadBarContent(new noticesList(), 0, "soundFragment" );
                         break;
                 }
 
@@ -318,7 +322,7 @@ String tokenm;
             }
         });
 
-       swipe.setOnRefreshListener(this::onRefresh);
+       getFragment().getSwipe().setOnRefreshListener(this::onRefresh);
 
         eventss.clear();;
         try {
@@ -347,7 +351,8 @@ String tokenm;
                 String date = getTime().getSimpleDateFormat().format(clickedDayCalendar.getTime());
 
 
-
+System.out.println(toDoLists.get(0).getDate());
+System.out.println(date);
                 List<ToDoList> resultList = toDoLists.stream().filter(p -> p.getDate().equals(date)).collect(Collectors.toList());
                 List<Event> resultListEvent = eventss.stream().filter(p -> p.getStartDate().equals(date)).collect(Collectors.toList());
 
@@ -567,11 +572,11 @@ String tokenm;
         not.add("Show all notices");
         not.add("Show only important");
         not.add("Pokaż notatki głosowe");
-        DropDownViewAdapter notices = new DropDownViewAdapter(getApplicationContext(),not,null,user,"Notice");
+        DropDownViewAdapter notices = new DropDownViewAdapter(getApplicationContext(),not,null,getUser(),"Notice");
 
-        user.noticeList=new ArrayList<>();
+        getUser().noticeList=new ArrayList<>();
 
-            user.getNotices(user.getAccessToken(),user.getId()).subscribeOn(Schedulers.io())
+            getUser().getNotices(getUser().getAccessToken(),getUser().getId()).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<Notice>() {
                         @Override
@@ -582,7 +587,7 @@ String tokenm;
                         @Override
                         public void onNext(@io.reactivex.rxjava3.annotations.NonNull Notice notice) {
 
-                            user.noticeList.add(notice);
+                            getUser().noticeList.add(notice);
 
                         }
 
@@ -594,7 +599,7 @@ String tokenm;
                         @Override
                         public void onComplete() {
 
-                            System.out.println(user.noticeList);
+                            System.out.println(getUser().noticeList);
                         }
                     });
 
@@ -610,7 +615,7 @@ String tokenm;
 
 
 
-                    user.getEventSQL(user.accessToken,user.getId()).subscribeOn(Schedulers.io())
+                    getUser().getEventSQL(getUser().accessToken,getUser().getId()).subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                             .subscribe(new Observer<Event>() {
                                                 @Override
@@ -631,7 +636,7 @@ String tokenm;
                                                 @Override
                                                 public void onComplete() {
                                                     try {
-                                                        user.getList(user.getAccessToken(),user.getId()).subscribeOn(Schedulers.io())
+                                                        getUser().getList(getUser().getAccessToken(),getUser().getId()).subscribeOn(Schedulers.io())
                                                                 .observeOn(AndroidSchedulers.mainThread())
                                                                 .subscribe(new Observer<ToDoList>() {
                                                                     @Override
@@ -649,7 +654,9 @@ String tokenm;
                                                                             throw new RuntimeException(e);
                                                                         }
                                                                         calendar = Calendar.getInstance();
-
+                                                                        System.out.println(date2.getYear()+1900);
+                                                                        System.out.println(date2.getMonth());
+                                                                        System.out.println(date2.getDate());
 
                                                                         calendar.set(date2.getYear()+1900,date2.getMonth(), date2.getDate());
                                                                         List<Event> resultList = eventss.stream().filter(p -> p.getStartDate().equals(date)).collect(Collectors.toList());
@@ -682,12 +689,12 @@ String tokenm;
                                                                         System.out.println("end");
 
                                                                         if(!isMyServiceRunning(undefinedItemsService.class)) {
-                                                                            if(eventss.size()!=0&&toDoLists.size()!=0&&user.noticeList.size()!=0){
+                                                                            if(eventss.size()!=0&&toDoLists.size()!=0&&getUser().noticeList.size()!=0){
 
                                                                                 Intent leftthings= new Intent(getBaseContext(), undefinedItemsService.class);
                                                                                 leftthings.putExtra("events",eventss.size());
                                                                                 leftthings.putExtra("lists",toDoLists.stream().filter(element->element.isDone()==false).collect(Collectors.toList()).size());
-                                                                                leftthings.putExtra("notices",user.noticeList.stream().filter(element-> element.getImportant()==true).collect(Collectors.toList()).size());
+                                                                                leftthings.putExtra("notices",getUser().noticeList.stream().filter(element-> element.getImportant()==true).collect(Collectors.toList()).size());
                                                                                 startService(leftthings);
                                                                             }
 
@@ -730,7 +737,7 @@ String tokenm;
                                                                         });
 
                                                                       if(toDoLists.size()!=0)  setProgres(listBar,listTextBar,"List");
-                                                                      if(user.noticeList.size()!=0)   setProgres(noticeBar,noticeProgressText,"Notice");
+                                                                      if(getUser().noticeList.size()!=0)   setProgres(noticeBar,noticeProgressText,"Notice");
                                                                       if(eventss.size()!=0)  {setProgres(eventBar,eventProgressText,"Event");};
 
                                                                         check();
@@ -816,72 +823,84 @@ String tokenm;
         createNotice notice=null;
         Profile profile=null;
         PrintNoticePicture PrintPictureNotice=null;
+        boolean list = false;
 
-        if( getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder) instanceof createNotice){
-            notice = (createNotice) getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder);
+        if( getSupportFragmentManager().findFragmentById(R.id.MenuFragmentPlaceHolder) instanceof createNotice){
+            notice = (createNotice) getSupportFragmentManager().findFragmentById(R.id.MenuFragmentPlaceHolder);
         }
-        if(getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder) instanceof Profile){
-            profile = (Profile) getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder);
-        }
-
-        if(getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder) instanceof PrintNoticePicture){
-
-
-            getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder).getActivity().finish();
-            PrintPictureNotice = (PrintNoticePicture) getSupportFragmentManager().findFragmentById(R.id.flFragmentPlaceHolder);
+        if(getSupportFragmentManager().findFragmentById(R.id.MenuFragmentPlaceHolder) instanceof Profile){
+            profile = (Profile) getSupportFragmentManager().findFragmentById(R.id.MenuFragmentPlaceHolder);
         }
 
+        if(getSupportFragmentManager().findFragmentById(R.id.MenuFragmentPlaceHolder) instanceof PrintNoticePicture){
 
 
-        if(!(notice != null && notice.isVisible())&&!(profile != null && profile.isVisible())&&PrintPictureNotice == null) { System.out.println("cycki");
-            try {
-                getUser().logOut( getUser().getAccessToken()).subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<Void>() {
-                            @Override
-                            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+            getSupportFragmentManager().findFragmentById(R.id.MenuFragmentPlaceHolder).getActivity().finish();
+            PrintPictureNotice = (PrintNoticePicture) getSupportFragmentManager().findFragmentById(R.id.MenuFragmentPlaceHolder);
+        }
+        if(getSupportFragmentManager().findFragmentById(R.id.MenuFragmentPlaceHolder) instanceof noticesList){
 
-                            }
+        System.out.println("noticeList");
 
-                            @Override
-                            public void onNext(@io.reactivex.rxjava3.annotations.NonNull Void unused) {
-
-                            }
-
-                            @Override
-                            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                intent.putExtra("logout", true);
-                                finish();
-
-                                startActivity(intent);
-                            }
-                        });
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
+            list = true;
         }
 
 
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
 
+
+
+
+        if(!(notice != null && notice.isVisible())&&!(profile != null && profile.isVisible())&&PrintPictureNotice == null && list==false) {
+            infodialog info = new infodialog("Czy napewno chcesz sie wylogować?", this,"Confirm" );
+            info.getYes().setBackgroundColor(this.getResources().getColor(R.color.delete));
+            info.getDialog().show();
+            info.getYes().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        getUser().logOut( getUser().getAccessToken()).subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Observer<Void>() {
+                                    @Override
+                                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull Void unused) {
+
+                                    }
+
+                                    @Override
+                                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+
+                                    }
+
+                                    @Override
+                                    public void onComplete() {
+                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                        intent.putExtra("logout", true);
+                                        finish();
+
+                                        startActivity(intent);
+                                    }
+                                });
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
 
         } else {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START);
 
 
-
-
-            super.onBackPressed();
-
-
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -907,7 +926,7 @@ String tokenm;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        swipe.setRefreshing(false);
+        getFragment().getSwipe().setRefreshing(false);
 
     }
 
@@ -924,12 +943,12 @@ String tokenm;
         if(flag==1) {
 
             transaction.add(R.id.MenuFragmentPlaceHolder,fragment);
-            manager.popBackStack(ROOT_FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            transaction.addToBackStack(ROOT_FRAGMENT_TAG);
+            manager.popBackStack(value, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            transaction.addToBackStack(value);
         }else if(flag==0){
             transaction.replace(R.id.MenuFragmentPlaceHolder,fragment);
-            manager.popBackStack(ROOT_FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            transaction.addToBackStack(ROOT_FRAGMENT_TAG);
+            manager.popBackStack(value, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            transaction.addToBackStack(value);
 
         }else{
             transaction.replace(R.id.MenuFragmentPlaceHolder,fragment);
@@ -989,7 +1008,7 @@ String tokenm;
 
     }
     public void disableSwipe(){
-        swipe.setEnabled(false);
+        getFragment().getSwipe().setEnabled(false);
         ScrollView scrollView = findViewById(R.id.scrollbar);
         scrollView.setEnabled(false);
     }

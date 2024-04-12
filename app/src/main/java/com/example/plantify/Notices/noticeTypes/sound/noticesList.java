@@ -5,6 +5,7 @@ import android.content.ContextWrapper;
 import android.media.Image;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -26,7 +27,7 @@ import java.util.List;
  * Use the {@link noticesList#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class noticesList extends com.example.plantify.Helpers.Fragment {
+public class noticesList  extends com.example.plantify.Helpers.Fragment  {
 
 
 
@@ -35,7 +36,7 @@ public class noticesList extends com.example.plantify.Helpers.Fragment {
     }
 
 
-    public static noticesList newInstance(String param1, String param2) {
+    public static noticesList newInstance() {
         noticesList fragment = new noticesList();
         Bundle args = new Bundle();
 
@@ -51,9 +52,11 @@ public class noticesList extends com.example.plantify.Helpers.Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_notices_list, container, false);
         ImageView soundIcon = view.findViewById(R.id.note);
@@ -61,9 +64,14 @@ public class noticesList extends com.example.plantify.Helpers.Fragment {
         ContextWrapper cw = new ContextWrapper(getActivity());
         ListView galery = view.findViewById(R.id.SoundGallery);
         java.io.File directory = cw.getDir(String.valueOf(getUser().getId()+"_audio"), Context.MODE_PRIVATE);
-
-        soundListAdapter adapter = new soundListAdapter(getActivity(), Arrays.asList(directory.listFiles()), getActivity(), getUser());
+        soundListAdapter adapter = new soundListAdapter(getActivity(), Arrays.asList(directory.listFiles()), getActivity(), getUser(), getMediaPlayer(), this);
         galery.setAdapter(adapter);
+
         return view;
+
+
+
     }
+
+
 }
