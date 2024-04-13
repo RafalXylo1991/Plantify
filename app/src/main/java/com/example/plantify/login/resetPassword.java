@@ -9,11 +9,9 @@ import android.widget.TextView;
 
 
 import com.example.plantify.R;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
 
-import org.jetbrains.annotations.Async;
 import org.json.JSONException;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 

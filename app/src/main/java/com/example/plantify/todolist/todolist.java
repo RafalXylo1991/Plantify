@@ -10,14 +10,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.plantify.ExtendClass;
 import com.example.plantify.R;
-import com.example.plantify.objects.Task;
-import com.example.plantify.objects.ToDoList;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.Task;
+import com.example.plantify.Models.PictureNotice.ToDoList;
+import com.example.plantify.Models.PictureNotice.users;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
@@ -25,6 +24,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -59,23 +59,15 @@ public class todolist extends ExtendClass {
             public void onClick(View v) {
                 if(task.getText().toString().equals("")){
 
-                    task.setError("Enter the task");
+                    task.setError("Dodaj nowe zdanie:");
                 }else{
                     taskList.add(new Task(taskList.size()+1,task.getText().toString()));
                     FrameLayout container = findViewById(R.id.flFragmentPlaceHolder);
                     FragmentManager manager = getSupportFragmentManager();
                     addTaskAdapter tasks = new addTaskAdapter(getApplicationContext(), taskList,container,manager,null,noticeList);
-
-
-
-
-
                     noticeList.setAdapter(tasks);
-
                     task.setText("");
                 }
-
-
             }
         });
         setDay.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +100,7 @@ public class todolist extends ExtendClass {
 
                 if(title.getText().toString().equals("")){
                     isValid=false;
-                    title.setError("Enter the title");
+                    title.setError("Podaj nazwe listy");
                 }
                 if(setDay.getText().toString().equals("")){
                     isValid=false;
@@ -134,7 +126,7 @@ public class todolist extends ExtendClass {
 
                 if(isValid){
                     try {
-                        user.addToDoList(new ToDoList(0,title.getText().toString(),setDay.getText().toString(),tasks,false,0), user.getAccessToken(),user.getId()).subscribeOn(Schedulers.io())
+                        user.addToDoList(new ToDoList(0,title.getText().toString(),setDay.getText().toString(),"",tasks,false,0), user.getAccessToken(),user.getId()).subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Observer<Void>() {
                                     @Override

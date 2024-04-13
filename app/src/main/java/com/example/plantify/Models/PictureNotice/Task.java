@@ -1,4 +1,4 @@
-package com.example.plantify.objects;
+package com.example.plantify.Models.PictureNotice;
 
 public class Task {
     public int getId() {

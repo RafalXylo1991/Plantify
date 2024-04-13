@@ -6,7 +6,7 @@ import android.content.Intent;
 import androidx.annotation.Nullable;
 
 
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
 
 import java.util.ArrayList;
 import java.util.List;

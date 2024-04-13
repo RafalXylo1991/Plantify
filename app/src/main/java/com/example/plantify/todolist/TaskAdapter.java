@@ -20,14 +20,15 @@ import androidx.fragment.app.FragmentManager;
 
 
 import com.example.plantify.R;
-import com.example.plantify.objects.Task;
-import com.example.plantify.objects.ToDoList;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.Task;
+import com.example.plantify.Models.PictureNotice.ToDoList;
+import com.example.plantify.Models.PictureNotice.users;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -122,6 +123,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
                         if(setProgresss()==100){
                             lista.setDone(true);
+                            lista.setDate_done(activity.getTime().DateFormat(new Date()));
                         }else{
                             lista.setDone(false);
                         }
@@ -178,7 +180,6 @@ public class TaskAdapter extends ArrayAdapter<Task> {
                 if(!currentNumberPosition.isDone()){
                     if(isChecked&&cipka.getText().toString().equals(currentNumberPosition.getTitle())){
                         arrayList.get(position).setDone(true);
-                        cipka.setText("Done");
                         progress.setProgress(setProgresss());
                     }else{
                         arrayList.get(position).setDone(false);
@@ -188,7 +189,6 @@ public class TaskAdapter extends ArrayAdapter<Task> {
                 else{
                     if(!isChecked&&cipka.getText().toString().equals(currentNumberPosition.getTitle())){
                         arrayList.get(position).setDone(false);
-                        cipka.setText(currentNumberPosition.getTitle());
                         progress.setProgress(setProgresss());
                     }
                 }

@@ -4,10 +4,10 @@ import android.content.Context;
 import android.util.Log;
 
 
-import com.example.plantify.objects.Event;
+import com.example.plantify.Models.PictureNotice.Event;
 import com.example.plantify.Models.PictureNotice.Notice;
-import com.example.plantify.objects.ToDoList;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.ToDoList;
+import com.example.plantify.Models.PictureNotice.users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -600,6 +600,7 @@ public class SQL {
                 conn.setDoInput(true);
                 JSONObject jsonParam = new JSONObject();
                 jsonParam.put("id", list.getId());
+                jsonParam.put("date_done", list.getDate_done());
 
                 jsonParam.put("title", list.getTitle());
                 jsonParam.put("tasks", list.getTasks());
@@ -948,7 +949,7 @@ public class SQL {
                             emitter.onComplete();
                         }
                     }
-
+                emitter.onComplete();
 
 
 
@@ -1031,6 +1032,7 @@ public class SQL {
                                 name.getAsJsonObject().get("id").getAsInt(),
                                 name.getAsJsonObject().get("title").getAsString(),
                                 name.getAsJsonObject().get("date").getAsString(),
+                                "",
                                 name.getAsJsonObject().get("tasks").getAsJsonObject(),
                                 name.getAsJsonObject().get("isdone").getAsBoolean(),
                                 name.getAsJsonObject().get("progress").getAsInt()

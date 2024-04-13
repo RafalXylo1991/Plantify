@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.plantify.R;
 import com.example.plantify.firstLoginSplashScreen;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
 
 import org.json.JSONArray;
 import org.json.JSONException;

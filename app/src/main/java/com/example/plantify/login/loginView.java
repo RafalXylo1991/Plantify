@@ -14,12 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.plantify.Menu;
 import com.example.plantify.R;
 import com.example.plantify.SQL;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
 
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.stream.StreamSupport;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;

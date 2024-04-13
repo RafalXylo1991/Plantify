@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
 
 public class firstLoginSplashScreen extends AppCompatActivity {
   users user;

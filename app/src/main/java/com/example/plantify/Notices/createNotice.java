@@ -13,7 +13,7 @@ import com.example.plantify.R;
 import com.example.plantify.Notices.noticeTypes.text.TextNotice;
 import com.example.plantify.Notices.noticeTypes.picture.pictureNotice;
 import com.example.plantify.Notices.noticeTypes.sound.soundNotice;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
 
 import java.util.ArrayList;
 import java.util.List;

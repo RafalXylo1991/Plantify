@@ -3,7 +3,6 @@ package com.example.plantify.Notices.noticeTypes.sound;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +15,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.plantify.Helpers.Fragment;
-import com.example.plantify.Notices.noticeTypes.picture.pictureNotice;
 import com.example.plantify.R;
 import com.example.plantify.objects.infodialog;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 
 public class soundListAdapter extends BaseAdapter {

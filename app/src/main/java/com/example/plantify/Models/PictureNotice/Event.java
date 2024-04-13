@@ -1,4 +1,4 @@
-package com.example.plantify.objects;
+package com.example.plantify.Models.PictureNotice;
 
 import android.os.Parcel;
 import android.os.Parcelable;

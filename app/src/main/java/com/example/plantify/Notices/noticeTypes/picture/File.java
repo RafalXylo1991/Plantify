@@ -4,9 +4,8 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Random;

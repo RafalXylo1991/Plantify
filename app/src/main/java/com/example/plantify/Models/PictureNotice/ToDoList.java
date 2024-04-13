@@ -1,4 +1,4 @@
-package com.example.plantify.objects;
+package com.example.plantify.Models.PictureNotice;
 
 import android.os.Build;
 import android.os.Parcel;
@@ -46,10 +46,11 @@ public class ToDoList implements Parcelable {
         return date;
     }
 
-    public ToDoList(int id,String title,String date, JsonObject tasks, boolean isDone, int progress) {
+    public ToDoList(int id,String title,String date, String date_done, JsonObject tasks, boolean isDone, int progress) {
         this.id=id;
         this.title = title;
         this.date = date;
+        this.date_done = date_done;
         this.tasks = tasks;
         this.isDone=isDone;
         this.progress=progress;
@@ -79,7 +80,17 @@ public class ToDoList implements Parcelable {
     }
 
     String date;
+    String date_done;
     JsonObject tasks;
+
+    public String getDate_done() {
+        return date_done;
+    }
+
+    public void setDate_done(String date_done) {
+        this.date_done = date_done;
+    }
+
     int progress;
 
     public int getProgress() {
@@ -119,6 +130,7 @@ public class ToDoList implements Parcelable {
         dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(date);
+        dest.writeString(date_done);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             dest.writeBoolean(isDone);
         }

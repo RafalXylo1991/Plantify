@@ -22,8 +22,8 @@ import androidx.core.content.ContextCompat;
 import com.example.plantify.MainActivity;
 import com.example.plantify.R;
 import com.example.plantify.login.loginView;
-import com.example.plantify.objects.Event;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.Event;
+import com.example.plantify.Models.PictureNotice.users;
 
 import java.text.DateFormat;
 import java.text.ParseException;

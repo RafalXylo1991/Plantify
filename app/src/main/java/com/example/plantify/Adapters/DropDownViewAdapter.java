@@ -19,7 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.plantify.R;
 import com.example.plantify.Models.PictureNotice.Notice;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
 
 import java.util.List;
 

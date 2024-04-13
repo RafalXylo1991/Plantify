@@ -52,7 +52,7 @@ dependencies {
     implementation("com.drewnoakes:metadata-extractor:2.18.0")
 
     implementation("com.jsibbold:zoomage:1.3.1")
-
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation("commons-logging:commons-logging:1.3.1")
     implementation("org.apache.directory.studio:org.apache.commons.io:2.4")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.12")

@@ -55,9 +55,11 @@
             android:exported="false" />
         <activity
             android:name=".todolist.todolist_print"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".todolist.todolist"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".Notices.Notices"
@@ -68,11 +70,12 @@
         <service android:name=".Threads.MyIntentService" />
 
         <activity
-            android:name=".Evemts"
+            android:name=".events.Evemts"
             android:exported="false" />
         <activity
             android:name=".Menu"
             android:exported="false"
+            android:screenOrientation="portrait"
           />
         <activity
             android:name=".login.loginView"

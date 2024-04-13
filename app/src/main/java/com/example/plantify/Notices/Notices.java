@@ -24,7 +24,7 @@ import com.example.plantify.MainActivity;
 import com.example.plantify.R;
 import com.example.plantify.menuContents.Profile;
 import com.example.plantify.Models.PictureNotice.Notice;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
 import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONException;

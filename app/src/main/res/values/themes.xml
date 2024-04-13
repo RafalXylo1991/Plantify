@@ -7,7 +7,13 @@
     </style>
 
     <style name="Theme.Projekt" parent="Base.Theme.Projekt" />
-
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        ...
+        <item name="android:textColorPrimary">#E74C3C</item>
+        <item name="android:textColorSecondary">#E74C3C</item>
+        <item name="android:textColorTertiary">#E74C3C</item>
+        ...
+    </style>
 
 
 
@@ -18,6 +24,17 @@
 
     </style>
 
+    <style name="AppTheme.FullBackground" parent="Base.Theme.Projekt">
+        <item name="android:textColor">#86AD33</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20dp</item>
+        <item name="strokeColor">#CB4335</item>
+
+    </style>
+
+    <style name="AppTheme.TextColor" parent="@style/Theme.AppCompat">
+        <item name="android:textColor">#CB4335</item>
+    </style>
     <style name="progressbartext" parent="@style/Theme.AppCompat">
         <item name="android:textSize">12sp</item>
     </style>

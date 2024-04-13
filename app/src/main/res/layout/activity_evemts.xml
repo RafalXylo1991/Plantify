@@ -9,7 +9,7 @@
         android:id="@+id/drawLayout"
         tools:openDrawer="start"
     android:background="@drawable/kjjk"
-        tools:context=".Evemts">
+        tools:context=".events.Evemts">
 
     <FrameLayout
         android:id="@+id/flFragmentPlaceHolder"
@@ -117,7 +117,7 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/startDateAdd"
                                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                    android:layout_width="185dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:editable="false"
                                     android:hint="Start date"
@@ -146,7 +146,7 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/endDate"
                                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                    android:layout_width="185dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:editable="false"
                                     android:hint="End date"
@@ -174,7 +174,7 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/startHour"
                                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                    android:layout_width="185dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:editable="false"
                                     android:hint="Start Hour"
@@ -203,7 +203,7 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/endHour"
                                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                    android:layout_width="185dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:editable="false"
                                     android:hint="End hour"

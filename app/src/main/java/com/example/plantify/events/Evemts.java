@@ -1,4 +1,4 @@
-package com.example.plantify;
+package com.example.plantify.events;
 
 import android.app.ActivityManager;
 import android.app.DatePickerDialog;
@@ -22,7 +22,6 @@ import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -32,11 +31,16 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.applandeo.materialcalendarview.EventDay;
 
+import com.example.plantify.ExtendClass;
 import com.example.plantify.Helpers.Time;
+import com.example.plantify.MainActivity;
+import com.example.plantify.Menu;
+import com.example.plantify.R;
+import com.example.plantify.SQL;
 import com.example.plantify.menuContents.Profile;
-import com.example.plantify.objects.Event;
+import com.example.plantify.Models.PictureNotice.Event;
 import com.example.plantify.objects.infodialog;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
 import com.example.plantify.services.backgroundService;
 import com.example.plantify.services.undefinedItemsService;
 import com.google.android.material.navigation.NavigationView;
@@ -45,7 +49,6 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -57,7 +60,7 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class Evemts extends ExtendClass  {
+public class Evemts extends ExtendClass {
     private static final String ROOT_FRAGMENT_TAG = "fragmetnt";
     DrawerLayout drawerLayout;
     TextView startDate;

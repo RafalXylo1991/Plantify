@@ -16,7 +16,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.example.plantify.Helpers.Fragment;
 import com.example.plantify.R;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
 
 import java.io.File;
 import java.util.List;

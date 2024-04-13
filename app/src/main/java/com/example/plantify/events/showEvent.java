@@ -15,15 +15,13 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TimePicker;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 
 import com.example.plantify.ExtendClass;
 import com.example.plantify.Menu;
 import com.example.plantify.R;
-import com.example.plantify.objects.Event;
+import com.example.plantify.Models.PictureNotice.Event;
 import com.example.plantify.objects.infodialog;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
 import com.skydoves.balloon.ArrowPositionRules;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
@@ -33,7 +31,6 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;

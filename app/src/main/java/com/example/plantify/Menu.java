@@ -37,16 +37,16 @@ import com.example.plantify.Adapters.DropDownViewAdapter;
 import com.example.plantify.Notices.Notices;
 import com.example.plantify.Notices.createNotice;
 import com.example.plantify.Notices.noticeTypes.picture.PrintNoticePicture;
-import com.example.plantify.Notices.noticeTypes.picture.pictureNotice;
 import com.example.plantify.Notices.noticeTypes.sound.noticesList;
+import com.example.plantify.events.Evemts;
 import com.example.plantify.events.showEvent;
 import com.example.plantify.menuContents.Profile;
 import com.example.plantify.notifications.CreateChannel;
-import com.example.plantify.objects.Event;
+import com.example.plantify.Models.PictureNotice.Event;
 import com.example.plantify.Models.PictureNotice.Notice;
-import com.example.plantify.objects.ToDoList;
+import com.example.plantify.Models.PictureNotice.ToDoList;
 import com.example.plantify.objects.infodialog;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
 import com.example.plantify.services.backgroundService;
 import com.example.plantify.services.undefinedItemsService;
 import com.example.plantify.todolist.todolist;
@@ -92,7 +92,7 @@ public class Menu extends ExtendClass implements SwipeRefreshLayout.OnRefreshLis
     List<EventDay> eventArray = new ArrayList<>();
 
     List<Event> eventss = new ArrayList<>();
-    List<ToDoList> toDoLists = new ArrayList<>();
+
     NotificationManager manager;
 
     ConstraintLayout content;
@@ -222,8 +222,9 @@ String tokenm;
         });
 
         listBar =(ProgressBar)  findViewById(R.id.listProgressBar);
-        listBar.setOnClickListener(v -> displayToolTip("Unfinished To-Do-List "+ getUser().unDoneLists+"/"+toDoLists.size(),listBar,R.color.noticecolor));
+        listBar.setOnClickListener(v -> displayToolTip("Unfinished To-Do-List "+getUser().unDoneLists+"/"+toDoLists.size(),listBar,R.color.noticecolor));
         listTextBar = (TextView) findViewById(R.id.list_progress_text);
+
 
         eventBar =(ProgressBar)  findViewById(R.id.eventProgressBar);
         eventBar.setOnClickListener(v -> displayToolTip("Current events "+ getUser().lastEvents+"/"+eventss.size(),eventBar, R.color.mainLogin));
@@ -259,25 +260,16 @@ String tokenm;
                         loadBarContent(new noticesList(), 0, "soundFragment" );
                         break;
                 }
-
-
-
             }
         });
         listsDropDown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
+                ToDoList list = (ToDoList) toDoLists.stream().filter(element->element.getTitle().equals(parent.getItemAtPosition(position).toString())).findFirst().get();
 
                 Intent intent= new Intent(getApplicationContext(), todolist_print.class);
-               ToDoList list = (ToDoList) toDoLists.stream().filter(element->element.getTitle().equals(parent.getItemAtPosition(position).toString())).findFirst().get();
-
-
-
                 intent.putExtra("user", getUser());
                 intent.putExtra("list",list);
-
                 intent.putExtra("tasks",list.getTasks().toString());
                 intent.putExtra("important",true);
                 listsDropDown.clearListSelection();
@@ -487,21 +479,13 @@ System.out.println(date);
         return false;
     }
     private void check() {
-        Log.i("check","check");
-        SimpleDateFormat formatter2;
         ArrayList<Event> toNotify = new ArrayList<>();
         final Date[] eventDate = new Date[1];
         final long[] time = {0};
         eventss.forEach(event -> {
-
-
-
             Date today = new Date();
-            Long d = new Date().getTime();
-            SimpleDateFormat formatter21 =new SimpleDateFormat("dd-MM-yyyy");
-
             try {
-                eventDate[0] = formatter21.parse(event.getStartDate());
+                eventDate[0] = getTime().getSimpleDateFormat().parse(event.getStartDate());
 
             } catch (ParseException e) {
                 throw new RuntimeException(e);
@@ -539,18 +523,15 @@ System.out.println(date);
         });
         if(toNotify.size()!=0){
             Date date;
-            formatter2=new SimpleDateFormat("dd-MM-yyyy");
+
 
             try {
-                date=formatter2.parse(toNotify.get(0).getStartDate());
+                date=getTime().getSimpleDateFormat().parse(toNotify.get(0).getStartDate());
 
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
             serviceIntent = new Intent(getApplicationContext(), backgroundService.class);
-
-
-
             serviceIntent.putParcelableArrayListExtra("event",(ArrayList<? extends Parcelable>) toNotify);
             Log.i("sdfdsf", String.valueOf(toNotify.size()));
             serviceIntent.putExtra("date",new Date(date.getTime()- time[0]));
@@ -558,9 +539,6 @@ System.out.println(date);
 
                 startService(serviceIntent);
                 Log.i("service","started");
-
-
-
         }
 
 
@@ -599,23 +577,12 @@ System.out.println(date);
                         @Override
                         public void onComplete() {
 
-                            System.out.println(getUser().noticeList);
                         }
                     });
 
         noticesDropDown.setAdapter(notices);
         eventArray.clear();
-
-
-                    SimpleDateFormat formatter2=new SimpleDateFormat("dd-MM-yyyy");
-
-
-
-
-
-
-
-                    getUser().getEventSQL(getUser().accessToken,getUser().getId()).subscribeOn(Schedulers.io())
+        getUser().getEventSQL(getUser().accessToken,getUser().getId()).subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                             .subscribe(new Observer<Event>() {
                                                 @Override
@@ -646,20 +613,18 @@ System.out.println(date);
 
                                                                     @Override
                                                                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull ToDoList toDoList) {
-                                                                        String date =toDoList.getDate();
-                                                                        Date date2= null;
+
+                                                                        Date date = null;
                                                                         try {
-                                                                            date2 = formatter2.parse(date);
+                                                                            date = getTime().getSimpleDateFormat().parse(toDoList.getDate());
                                                                         } catch (ParseException e) {
                                                                             throw new RuntimeException(e);
                                                                         }
-                                                                        calendar = Calendar.getInstance();
-                                                                        System.out.println(date2.getYear()+1900);
-                                                                        System.out.println(date2.getMonth());
-                                                                        System.out.println(date2.getDate());
 
-                                                                        calendar.set(date2.getYear()+1900,date2.getMonth(), date2.getDate());
-                                                                        List<Event> resultList = eventss.stream().filter(p -> p.getStartDate().equals(date)).collect(Collectors.toList());
+                                                                        calendar = Calendar.getInstance();
+
+                                                                        calendar.set(date.getYear()+1900,date.getMonth(), date.getDate());
+                                                                        List<Event> resultList = eventss.stream().filter(p -> p.getStartDate().equals(toDoList.getDate())).collect(Collectors.toList());
                                                                         if(resultList.size()==0){
                                                                             if(!toDoList.isDone()){
                                                                                 eventArray.add( new EventDay(calendar, R.drawable.unfinished, getResources().getColor(R.color.noticecolor)));
@@ -704,20 +669,18 @@ System.out.println(date);
                                                                             @Override
                                                                             public void accept(Event event) {
                                                                                 boolean is=false;
-                                                                                String date =event.getStartDate();
-                                                                                Date date2= null;
+                                                                                Date date = null;
                                                                                 try {
-                                                                                    date2 = formatter2.parse(date);
+                                                                                    date = getTime().getSimpleDateFormat().parse(event.getStartDate());
                                                                                 } catch (ParseException e) {
                                                                                     throw new RuntimeException(e);
                                                                                 }
-
 
                                                                                 calendar = Calendar.getInstance();
 
 
 
-                                                                                calendar.set(date2.getYear()+1900,date2.getMonth(), date2.getDate());
+                                                                                calendar.set(date.getYear()+1900,date.getMonth(), date.getDate());
 
                                                                                 EventDay[] day = new EventDay[1];
 
@@ -775,8 +738,10 @@ System.out.println(date);
         switch (type){
             case "List":
                 System.out.println("list");
-                getUser().unDoneLists=(toDoLists.stream().filter(check->check.isDone()==true).collect(Collectors.toList()).size());
+                getUser().unDoneLists=toDoLists.size()-(toDoLists.stream().filter(check->check.isDone()==true).collect(Collectors.toList()).size());
                 procent = (toDoLists.stream().filter(check->check.isDone()==true).collect(Collectors.toList()).size()*100)/toDoLists.size();
+                bar.setProgress(100-procent);
+                text.setText(String.valueOf(100-procent));
                 break;
             case "Notice":
              int size=    getUser().noticeList.stream().filter(check->check.getImportant()==true).collect(Collectors.toList()).size();
@@ -789,12 +754,9 @@ System.out.println(date);
                 eventss.forEach(new Consumer<Event>() {
                     @Override
                     public void accept(Event event) {
-
-                        SimpleDateFormat formatter2=new SimpleDateFormat("dd-MM-yyyy");
-
                         try {
-                           Date d =formatter2.parse(event.getEndDate());
-                           long cycki = (d.getTime())-(new Date().getTime());
+                           Date date = getTime().getSimpleDateFormat().parse(event.getEndDate());
+                           long cycki = (date.getTime())-(new Date().getTime());
                         if(cycki>0){
                             i[0]++;
                         }

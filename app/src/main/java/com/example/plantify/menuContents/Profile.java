@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.example.plantify.MainActivity;
 import com.example.plantify.R;
 import com.example.plantify.objects.infodialog;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
 
 import org.json.JSONException;
 

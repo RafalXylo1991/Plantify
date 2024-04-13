@@ -21,7 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.plantify.login.loginView;
 import com.example.plantify.login.registerView;
 import com.example.plantify.notifications.CreateChannel;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
 import com.example.plantify.services.backgroundService;
 import com.example.plantify.services.undefinedItemsService;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;

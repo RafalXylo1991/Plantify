@@ -1,16 +1,28 @@
 package com.example.plantify;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.plantify.Helpers.Fragment;
 import com.example.plantify.Helpers.Time;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.ToDoList;
+import com.example.plantify.Models.PictureNotice.users;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExtendClass extends AppCompatActivity {
     private static Time time = new Time();
     private static users user = new users();
     private static Fragment fragment = new Fragment();
+    public static List<ToDoList> toDoLists = new ArrayList<>();
+
+    public static List<ToDoList> getToDoLists() {
+        return toDoLists;
+    }
+
+    public static void setToDoLists(List<ToDoList> toDoLists) {
+        ExtendClass.toDoLists = toDoLists;
+    }
 
     public static users getUser() {
         return user;

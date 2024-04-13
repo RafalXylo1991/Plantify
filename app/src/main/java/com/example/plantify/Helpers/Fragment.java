@@ -2,7 +2,6 @@ package com.example.plantify.Helpers;
 
 
 
-import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -13,8 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.plantify.R;
-import com.example.plantify.objects.infodialog;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
 
 public  class Fragment extends androidx.fragment.app.Fragment {
 

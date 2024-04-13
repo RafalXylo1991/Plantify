@@ -1,7 +1,6 @@
 package com.example.plantify.todolist;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -14,19 +13,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 
+import com.example.plantify.ExtendClass;
 import com.example.plantify.R;
-import com.example.plantify.objects.Task;
-import com.example.plantify.objects.ToDoList;
+import com.example.plantify.Models.PictureNotice.Task;
+import com.example.plantify.Models.PictureNotice.ToDoList;
 import com.example.plantify.objects.infodialog;
-import com.example.plantify.objects.users;
+import com.example.plantify.Models.PictureNotice.users;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
+
+import javax.json.Json;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -34,7 +40,7 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class todolist_print extends AppCompatActivity  {
+public class todolist_print extends ExtendClass {
     Task task;
     List<Task> list;
     @Override
@@ -50,56 +56,31 @@ public class todolist_print extends AppCompatActivity  {
         Button save = findViewById(R.id.save);
         Button delete = findViewById(R.id.delteList);
 
-
         title.setText(lista.getTitle());
         list = new ArrayList<>();
-        try {
-            JSONObject obj = new JSONObject(getIntent().getStringExtra("tasks"));
-            obj.keys().forEachRemaining(new Consumer<String>() {
-                @Override
-                public void accept(String s) {
-                    try {
-                        JSONObject json = (JSONObject) obj.get(s);
-                        json.keys().forEachRemaining(new Consumer<String>() {
-                            @Override
-                            public void accept(String ss) {
-                                if(!ss.equals("kind")){
-                                    task =new Task(Integer.parseInt(s),ss);
-                                }
-
-                                try {
-                                    if(ss.equals("kind")){
-                                        task.setKind(json.getString("kind"));
-                                    }else {
-                                        task.setDone(json.getBoolean(ss));
-                                    }
-
-
-
-
-
-
-                                } catch (JSONException e) {
-                                    throw new RuntimeException(e);
-                                }
-
-                                ;
-                            }
-                        });
-                        list.add(task);
-
-
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
+        getToDoLists().forEach(new Consumer<ToDoList>() {
+            @Override
+            public void accept(ToDoList toDoList) {
+                JsonObject json =  toDoList.getTasks();
+                try {
+                    JSONObject obj = new JSONObject(json.toString());
+                    Iterator<String> keys = obj.keys();
+                    while(keys.hasNext()) {
+                        String key = keys.next();
+                        String value = obj.getString(key);
+                        JSONObject value2 = new JSONObject(value);
+                        list.add(new Task(Integer.valueOf(key),value));
                     }
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
                 }
 
-            });
 
 
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+            }
+        });
+
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override

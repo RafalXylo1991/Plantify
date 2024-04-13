@@ -6,14 +6,18 @@
 <group>
     <item
         android:id="@+id/profile"
-        android:title="Profile"
+        android:title="Profil"
         android:icon="@drawable/profile"
         />
-
+    <item
+        android:id="@+id/statistics"
+        android:title="Statystyki"
+        android:icon="@drawable/statistics"
+        />
 
     <item
         android:id="@+id/about"
-        android:title="About"
+        android:title="Informacje"
 
         android:icon="@drawable/about"
 
