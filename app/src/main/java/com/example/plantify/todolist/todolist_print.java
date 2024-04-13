@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import javax.json.Json;
 
@@ -49,18 +50,21 @@ public class todolist_print extends ExtendClass {
 
         setContentView(R.layout.activity_todolist_print);
         ToDoList lista =  getIntent().getParcelableExtra("list");
+        String date =  getIntent().getStringExtra("date");
         users user   =  getIntent().getParcelableExtra("user");
         ProgressBar progress = findViewById(R.id.progressBar);
         TextView title = findViewById(R.id.titleList);
         TextView progressText = findViewById(R.id.progress_text);
         Button save = findViewById(R.id.save);
         Button delete = findViewById(R.id.delteList);
-
+        List<ToDoList> cycki = getToDoLists().stream().filter(list->list.getDate().equals(date)).collect(Collectors.toList());
         title.setText(lista.getTitle());
         list = new ArrayList<>();
-        getToDoLists().forEach(new Consumer<ToDoList>() {
+
+        cycki.forEach(new Consumer<ToDoList>() {
             @Override
             public void accept(ToDoList toDoList) {
+                list.clear();
                 JsonObject json =  toDoList.getTasks();
                 try {
                     JSONObject obj = new JSONObject(json.toString());
@@ -69,7 +73,17 @@ public class todolist_print extends ExtendClass {
                         String key = keys.next();
                         String value = obj.getString(key);
                         JSONObject value2 = new JSONObject(value);
-                        list.add(new Task(Integer.valueOf(key),value));
+                        Iterator<String> keys2 = value2.keys();
+                        while(keys2.hasNext()) {
+                            String title = keys2.next();
+                            String  bool = value2.getString(title);
+
+                            task = new Task(Integer.valueOf(key),title);
+                            task.setDone(bool.equals("true")?true:false);
+                            list.add(task);
+
+                        }
+
                     }
 
                 } catch (JSONException e) {
@@ -135,7 +149,7 @@ public class todolist_print extends ExtendClass {
         FrameLayout container = findViewById(R.id.flFragmentPlaceHolder);
         FragmentManager manager = getSupportFragmentManager();
         ListView noticeList = findViewById(R.id.printtaskList);
-        TaskAdapter tasks = new TaskAdapter(getApplicationContext(), list,container,manager,user,noticeList,lista,progress,progressText,save,this);
+        TaskAdapter tasks = new TaskAdapter(getApplicationContext(), list,container,manager,getUser(),noticeList,lista,progress,progressText,save,this);
         noticeList.setAdapter(tasks);
     }
 }

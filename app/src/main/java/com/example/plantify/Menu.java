@@ -270,6 +270,7 @@ String tokenm;
                 Intent intent= new Intent(getApplicationContext(), todolist_print.class);
                 intent.putExtra("user", getUser());
                 intent.putExtra("list",list);
+                intent.putExtra("date",list.getDate());
                 intent.putExtra("tasks",list.getTasks().toString());
                 intent.putExtra("important",true);
                 listsDropDown.clearListSelection();
@@ -343,8 +344,6 @@ String tokenm;
                 String date = getTime().getSimpleDateFormat().format(clickedDayCalendar.getTime());
 
 
-System.out.println(toDoLists.get(0).getDate());
-System.out.println(date);
                 List<ToDoList> resultList = toDoLists.stream().filter(p -> p.getDate().equals(date)).collect(Collectors.toList());
                 List<Event> resultListEvent = eventss.stream().filter(p -> p.getStartDate().equals(date)).collect(Collectors.toList());
 
@@ -603,6 +602,7 @@ System.out.println(date);
                                                 @Override
                                                 public void onComplete() {
                                                     try {
+                                                        toDoLists.clear();
                                                         getUser().getList(getUser().getAccessToken(),getUser().getId()).subscribeOn(Schedulers.io())
                                                                 .observeOn(AndroidSchedulers.mainThread())
                                                                 .subscribe(new Observer<ToDoList>() {
@@ -651,7 +651,7 @@ System.out.println(date);
 
                                                                     @Override
                                                                     public void onComplete() {
-                                                                        System.out.println("end");
+
 
                                                                         if(!isMyServiceRunning(undefinedItemsService.class)) {
                                                                             if(eventss.size()!=0&&toDoLists.size()!=0&&getUser().noticeList.size()!=0){

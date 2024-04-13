@@ -126,6 +126,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
                             lista.setDate_done(activity.getTime().DateFormat(new Date()));
                         }else{
                             lista.setDone(false);
+                            lista.setDate_done("not done");
                         }
 
                     }
