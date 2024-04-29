@@ -30,13 +30,14 @@ public class enterResetKey extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_reset_key);
 
+        int key = getIntent().getIntExtra("resetKey",0);
+        System.out.println(key);
         EditText resetKeyFIeld = findViewById(R.id.resetKeyField);
 
         Button button = findViewById(R.id.sendKey);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(resetKeyFIeld.getText().toString());
                 try {
                     new SQL().sendKey(resetKeyFIeld.getText().toString(),getIntent().getStringExtra("email")).subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -48,11 +49,6 @@ public class enterResetKey extends AppCompatActivity {
 
                                 @Override
                                 public void onNext(@NonNull String s) {
-                                   if(s.equals("granted")){
-                                       Intent intent = new Intent(enterResetKey.this, createNewPassword.class);
-                                       intent.putExtra("email", getIntent().getStringExtra("email"));
-                                       startActivity(intent);
-                                   }
                                 }
 
                                 @Override
@@ -62,7 +58,9 @@ public class enterResetKey extends AppCompatActivity {
 
                                 @Override
                                 public void onComplete() {
-
+                                    Intent intent = new Intent(enterResetKey.this, createNewPassword.class);
+                                    intent.putExtra("email", getIntent().getStringExtra("email"));
+                                    startActivity(intent);
                                 }
                             });
                 } catch (IOException e) {

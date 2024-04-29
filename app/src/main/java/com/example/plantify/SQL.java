@@ -1,7 +1,11 @@
 package com.example.plantify;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 
 import com.example.plantify.Models.PictureNotice.Event;
@@ -27,6 +31,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.MessageFormat;
@@ -39,15 +44,15 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableEmitter;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 
-public class SQL {
+public class SQL{
 
-    static users user;
+     static users user;
 
     public  users getUser() {
         return user;
     }
 
-    public  void setUser(users user) {
+    public static void setUser(users user) {
         SQL.user = user;
     }
 
@@ -72,61 +77,69 @@ public class SQL {
                 jsonParam.put("password", password);
                 jsonParam.put("token", token);
 
+                try{
+                    DataOutputStream os = null;
 
-                System.out.println(jsonParam.toString());
-                DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-
-                os.writeBytes(jsonParam.toString());
+                    os = new DataOutputStream(conn.getOutputStream());
 
 
-                os.flush();
-                os.close();
 
-                System.out.println(String.valueOf(conn.getResponseCode()));
-                System.out.println(conn.getResponseMessage());
+                    os.writeBytes(jsonParam.toString());
 
-                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
 
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
+                    os.flush();
+                    os.close();
+
+                    System.out.println(String.valueOf(conn.getResponseCode()));
+                    System.out.println(conn.getResponseMessage());
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    String inputLine;
+                    StringBuffer response = new StringBuffer();
+
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    in.close();
+
+
+                    JsonObject jsonObject = new JsonParser().parse(response.toString()).getAsJsonObject();
+
+                    int error= Integer.valueOf(jsonObject.get("status").toString());
+                    System.out.println(jsonObject.get("status").toString());
+                    System.out.println("error");
+                    if(error==0)
+                    {
+                        emitter.onError(new RuntimeException(jsonObject.get("error").getAsString()));
+                    }else {
+                        user = new users(
+                                Integer.parseInt(jsonObject.get("user").getAsJsonObject().get("id").toString()),
+                                jsonObject.get("user").getAsJsonObject().get("name").toString(),
+                                jsonObject.get("user").getAsJsonObject().get("password").toString(),
+                                jsonObject.get("user").getAsJsonObject().get("email").toString()
+                        );
+                        user.isLogged=true;
+                        user.accessToken = jsonObject.get("accessToken").toString();
+                        user.refreshToken = jsonObject.get("refreshToken").toString();
+                        emitter.onNext(user);
+                        emitter.onComplete();;
+                    }
+                    conn.disconnect();
+
+                }catch (ConnectException error){
+                    emitter.onError(new RuntimeException(error) );
                 }
-                in.close();
 
-
-                JsonObject jsonObject = new JsonParser().parse(response.toString()).getAsJsonObject();
-
-                int error= Integer.valueOf(jsonObject.get("status").toString());
-                System.out.println(jsonObject.get("status").toString());
-                System.out.println("error");
-                if(error==0)
-                {
-                    emitter.onError(new RuntimeException("Error") );
-                }else {
-                    user = new users(
-                            Integer.parseInt(jsonObject.get("user").getAsJsonObject().get("id").toString()),
-                            jsonObject.get("user").getAsJsonObject().get("name").toString(),
-                            jsonObject.get("user").getAsJsonObject().get("password").toString(),
-                            jsonObject.get("user").getAsJsonObject().get("email").toString()
-                          );
-                    user.isLogged=true;
-                    user.accessToken = jsonObject.get("accessToken").toString();
-                    user.refreshToken = jsonObject.get("refreshToken").toString();
-                    emitter.onNext(user);
-                    emitter.onComplete();;
-                }
-                conn.disconnect();
             }
         });
         }
-    public   Observable<String> register(JSONObject user) throws IOException, JSONException {
+    public   Observable<String> register(JSONObject user, Context applicationContext) throws IOException, JSONException {
 
         return Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
                 try {
-                    String url2 = "http://192.168.1.158:4000/users/newUser";
+                    String url2 = "http://192.168.1.158:5000/users/newUser";
                     URL url = new URL(url2);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
@@ -156,9 +169,17 @@ public class SQL {
                     while ((inputLine = in.readLine()) != null) {
                         response.append(inputLine);
                     }
-                    if(!response.toString().replace("\"", "").equals("Error")){
+
+                    Gson g = new Gson();
+                    JSONObject json = new JSONObject(String.valueOf(response));
+                    System.out.println(json.get("data"));
+                    Boolean b = (Boolean) json.get("status");
+                    if(b){
+                        System.out.println(json.get("data"));
                         emitter.onComplete();;
                     }else{
+
+                        System.out.println(json.get("data"));
                         emitter.onNext(response.toString());
                     }
 
@@ -174,7 +195,7 @@ public class SQL {
         return  Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:4000/users/newUser";
+                String url2 = "http://192.168.1.158:5000/users/newUser";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -204,7 +225,7 @@ public class SQL {
 
                 os.flush();
                 os.close();
-                emitter.onComplete();
+
                 System.out.println(String.valueOf(conn.getResponseCode()));
                 System.out.println(conn.getResponseMessage());
 
@@ -217,10 +238,9 @@ public class SQL {
                 }
                 in.close();
 
-                // print result
-                Gson g = new Gson();
 
-                System.out.println(response.toString());
+
+                emitter.onComplete();
 
                 conn.disconnect();
 
@@ -231,7 +251,7 @@ public class SQL {
         return  Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:4000/users/updateToDoKind";
+                String url2 = "http://192.168.1.158:5000/users/updateToDoKind";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -285,7 +305,7 @@ public class SQL {
         return  Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:4000/users/getNotify";
+                String url2 = "http://192.168.1.158:5000/users/getNotify";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -338,7 +358,7 @@ public class SQL {
         return  Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:4000/users/getNotify";
+                String url2 = "http://192.168.1.158:5000/users/getNotify";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -488,7 +508,7 @@ public class SQL {
         return Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:4000/users/updateNotice";
+                String url2 = "http://192.168.1.158:5000/users/updateNotice";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("PUT");
@@ -540,7 +560,7 @@ public class SQL {
         return Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:4000/users/deleteList";
+                String url2 = "http://192.168.1.158:5000/users/deleteList";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("DELETE");
@@ -588,7 +608,7 @@ public class SQL {
         return Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:4000/users/updateList";
+                String url2 = "http://192.168.1.158:5000/users/updateList";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -880,7 +900,7 @@ public class SQL {
         return Observable.create(new ObservableOnSubscribe<Event>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Event> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:4000/users/getEvent";
+                String url2 = "http://192.168.1.158:5000/users/getEvent";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -969,7 +989,7 @@ public class SQL {
         return  Observable.create(new ObservableOnSubscribe<ToDoList>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<ToDoList> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:4000/users/getLists";
+                String url2 = "http://192.168.1.158:5000/users/getLists";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -1143,7 +1163,7 @@ public class SQL {
         return Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:4000/users/delEvent";
+                String url2 = "http://192.168.1.158:5000/users/delEvent";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -1204,7 +1224,7 @@ public class SQL {
         return Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:4000/users/logOut";
+                String url2 = "http://192.168.1.158:5000/users/logOut";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("DELETE");
@@ -1233,7 +1253,7 @@ public class SQL {
         return Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:4000/users/updateUser";
+                String url2 = "http://192.168.1.158:5000/users/updateUser";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("PUT");
@@ -1305,7 +1325,7 @@ public class SQL {
         return Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:4000/users/deleteUser";
+                String url2 = "http://192.168.1.158:5000/users/deleteUser";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("PUT");
@@ -1378,7 +1398,7 @@ public class SQL {
     }
     public void deleteNotice(String token, Notice notice) throws IOException, JSONException {
 
-        String url2 = "http://192.168.1.158:4000/users/delNotice";
+        String url2 = "http://192.168.1.158:5000/users/delNotice";
         URL url = new URL(url2);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("DELETE");
@@ -1439,63 +1459,68 @@ public class SQL {
 
 
     }
-    public Observable<String> resetPassword(String email) throws IOException, JSONException {
-              return Observable.create(new ObservableOnSubscribe<String>() {
-                  @Override
-                  public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
-                      String url2 = "http://192.168.1.158:4000/users/resetPassword";
-                      URL url = new URL(url2);
-                      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                      conn.setRequestMethod("POST");
-                      conn.setRequestProperty("Content-Type", "application/json");
-                      conn.setRequestProperty("Accept","application/json");
-
-                      conn.setDoOutput(true);
-                      conn.setDoInput(true);
+    public Observable<String> resetPassword(String email, Context applicationContext) throws IOException, JSONException {
 
 
 
-                      JSONObject jsonParam = new JSONObject();
+            return Observable.create(new ObservableOnSubscribe<String>() {
+                @Override
+                public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
+                    String url2 = "http://192.168.1.158:5000/users/resetPassword";
+                    URL url = new URL(url2);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    conn.setRequestProperty("Accept","application/json");
 
-                      jsonParam.put("email", email );
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
 
 
 
 
+                    JSONObject jsonParam = new JSONObject();
 
-
-                      System.out.println(jsonParam.toString());
-                      DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-
-                      os.writeBytes(jsonParam.toString());
-
-
-                      os.flush();
-                      os.close();
+                    jsonParam.put("email", email );
 
 
 
-                      System.out.println(String.valueOf(conn.getResponseCode()));
-                      System.out.println(conn.getResponseMessage());
-
-                      BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                      String inputLine;
-                      StringBuffer response = new StringBuffer();
-
-                      while ((inputLine = in.readLine()) != null) {
-                          response.append(inputLine);
-                      }
-                      in.close();
-                     System.out.println(response.toString());
-
-                     emitter.onNext(response.toString());
-                     emitter.onComplete();
-
-                      conn.disconnect();
 
 
-                  }
-              });
+
+                    System.out.println(jsonParam.toString());
+                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+
+                    os.writeBytes(jsonParam.toString());
+
+
+                    os.flush();
+                    os.close();
+
+
+
+                    System.out.println(String.valueOf(conn.getResponseCode()));
+                    System.out.println(conn.getResponseMessage());
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    String inputLine;
+                    StringBuffer response = new StringBuffer();
+
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    in.close();
+
+
+
+                    emitter.onNext(response.toString());
+                    emitter.onComplete();
+
+                    conn.disconnect();
+
+
+                }
+            });
 
 
 
@@ -1510,7 +1535,7 @@ public class SQL {
         return Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:4000/users/sendResetKey";
+                String url2 = "http://192.168.1.158:5000/users/sendResetKey";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -1558,8 +1583,12 @@ public class SQL {
                 emitter.onComplete();
                 System.out.println(response.toString());
 
-                emitter.onNext(response.toString());
-                emitter.onComplete();
+                JSONObject result = new JSONObject(response.toString());
+                if(result.get("message").equals("key correct")){
+                    emitter.onComplete();
+                }
+
+
 
                 conn.disconnect();
 
@@ -1580,7 +1609,7 @@ public class SQL {
         return Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:4000/users/setPassword";
+                String url2 = "http://192.168.1.158:5000/users/setPassword";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");

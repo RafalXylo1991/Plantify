@@ -75,17 +75,16 @@ public class todolist_print extends ExtendClass {
                         JSONObject value2 = new JSONObject(value);
                         Iterator<String> keys2 = value2.keys();
                         while(keys2.hasNext()) {
-                            String title = keys2.next();
-                            String  bool = value2.getString(title);
 
-                            task = new Task(Integer.valueOf(key),title);
-                            task.setDone(bool.equals("true")?true:false);
-                            list.add(task);
-
+                                String title = keys2.next();
+                                String  bool = value2.getString(title);
+                            if(!title.equals("date")){
+                                task = new Task(Integer.valueOf(key),title);
+                                task.setDone(bool.equals("true")?true:false);
+                                list.add(task);
+                            }
                         }
-
                     }
-
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -101,13 +100,13 @@ public class todolist_print extends ExtendClass {
             public void onClick(View v) {
 
 
-                    infodialog info = new infodialog("Do you want to delete this list?",todolist_print.this,"Confirm");
+                    infodialog info = new infodialog("Czy napewno chcesz usunąć to liste?",todolist_print.this,"Confirm");
                     info.getYes().setBackgroundColor(getResources().getColor(R.color.delete));
                     info.getYes().setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             try {
-                            user.delList(user.getAccessToken(),lista).subscribeOn(Schedulers.io())
+                            user.delList(getUser().getAccessToken(),lista).subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(new Observer<Void>() {
                                         @Override

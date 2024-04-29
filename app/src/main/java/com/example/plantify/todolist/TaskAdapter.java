@@ -107,8 +107,11 @@ public class TaskAdapter extends ArrayAdapter<Task> {
                     @Override
                     public void accept(Task task) {
                         JsonObject json = new JsonObject();
+
                         json.addProperty(task.getTitle(), task.isDone());
+                        json.addProperty("date", task.isDone()?activity.getTime().DateFormat(new Date()):null);
                         jsonObject.add(String.valueOf(task.getId()), json);
+
 
 
                     }

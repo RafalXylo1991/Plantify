@@ -8,8 +8,8 @@
     tools:context=".login.loginView">
 
     <LinearLayout
-        android:layout_width="264dp"
-        android:layout_height="181dp"
+        android:layout_width="311dp"
+        android:layout_height="183dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -37,8 +37,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:hint="Wprowadź klucz z maila"
                 android:inputType="numberPassword"
-                android:hint="Enter the key from mail"
 
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -56,6 +56,6 @@
             android:width="219dp"
             android:backgroundTint="@color/mainLogin"
             android:maxWidth="219dp"
-            android:text="Send key" />
+            android:text="Wyślij klucz" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

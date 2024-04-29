@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.plantify.ExtendClass;
 import com.example.plantify.Menu;
 import com.example.plantify.R;
 import com.example.plantify.SQL;
@@ -26,7 +27,7 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class loginView extends AppCompatActivity {
+public class loginView extends ExtendClass {
 
     private users userr;
     String token;
@@ -54,18 +55,15 @@ public class loginView extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                       Boolean isValid=true;
-
-
                       if(password.getText().toString().equals("")){
                           isValid=false;
-                          password.setError(Html.fromHtml("<font color='red'>Enter the password</font>"));
+                          password.setError("Podaj hasło");
 
                       }
                       if(isValid){
                           SQL sql=new SQL();
-
-                             userr2=new users();
-                              userr2.getToken().subscribeOn(Schedulers.io())
+                          userr2=new users();
+                          userr2.getToken().subscribeOn(Schedulers.io())
                                               .observeOn(AndroidSchedulers.mainThread())
                                                       .subscribe(new Observer<String>() {
                                                           @Override
@@ -86,7 +84,7 @@ public class loginView extends AppCompatActivity {
                                                           @Override
                                                           public void onComplete() {
                                                               try {
-                                                              sql.Login("xylo","xylo",token, getApplicationContext()).subscribeOn(Schedulers.io())
+                                                              sql.Login("xylo","cyckigh",token, getApplicationContext()).subscribeOn(Schedulers.io())
                                                                       .observeOn(AndroidSchedulers.mainThread())
                                                                       .subscribe(new Observer<users>() {
                                                                           @Override
@@ -102,9 +100,8 @@ public class loginView extends AppCompatActivity {
 
                                                                           @Override
                                                                           public void onError(@NonNull Throwable e) {
+                                                                              getEvents().setError(e, getApplicationContext());
 
-                                                                              Toast toast = Toast.makeText(getApplicationContext(), "Nie ma takiego użytkownika lub dane nie są poprawne", Toast.LENGTH_SHORT);
-                                                                              toast.show();
                                                                           }
 
                                                                           @Override
@@ -120,18 +117,11 @@ public class loginView extends AppCompatActivity {
                                                               throw new RuntimeException(e);
                                                           } catch (JSONException e) {
                                                               throw new RuntimeException(e);
-                                                          }
+                                                              }
                                                           }
                                                       });
-
                       }
-
-
-
-
-
             }
         });
-
     }
 }

@@ -46,10 +46,13 @@ android {
     }
 }
 
+
+
 dependencies {
     implementation("org.wso2.apache.httpcomponents:httpclient:4.3.1.wso2v1")
 
     implementation("com.drewnoakes:metadata-extractor:2.18.0")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     implementation("com.jsibbold:zoomage:1.3.1")
     implementation("com.google.code.gson:gson:2.10.1")

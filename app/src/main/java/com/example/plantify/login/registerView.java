@@ -105,7 +105,7 @@ public class registerView extends AppCompatActivity {
 
 
 
-                   user.register(newUser).subscribeOn(Schedulers.io())
+                   user.register(newUser, getApplicationContext()).subscribeOn(Schedulers.io())
                            .observeOn(AndroidSchedulers.mainThread())
                            .subscribe(new Observer<String>() {
                                @Override
@@ -115,7 +115,7 @@ public class registerView extends AppCompatActivity {
 
                                @Override
                                public void onNext(@NonNull String s) {
-                                   System.out.println("cipeczka");
+                                   System.out.println(s);
                                }
 
                                @Override

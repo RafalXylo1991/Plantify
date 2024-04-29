@@ -92,8 +92,6 @@ public class MainActivity extends AppCompatActivity {
                                        googleSignInClient.signOut().addOnSuccessListener(new OnSuccessListener<Void>() {
                                            @Override
                                            public void onSuccess(Void unused) {
-
-
                                            }
                                        });
 
@@ -101,29 +99,17 @@ public class MainActivity extends AppCompatActivity {
                                }
                            });
                            FirebaseAuth.getInstance().signOut();
-
                        }
-
-
-
-
                    });
        }
-
-        FirebaseMessaging.getInstance().subscribeToTopic("weather")
+       FirebaseMessaging.getInstance().subscribeToTopic("weather")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
-
-
-
                     }
                 });
         imageView = findViewById(R.id.imageView);
         FirebaseApp.initializeApp(this);
-
-
 
         loginImage = findViewById(R.id.googleicon);
 
@@ -141,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, String.valueOf(logedUser.isLogged), Toast.LENGTH_LONG).show();
         }
 
-
         TextView regedit = (TextView) findViewById(R.id.regedit);
 
         regedit.setOnClickListener(new View.OnClickListener() {
@@ -156,8 +141,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = googleSignInClient.getSignInIntent();
                 activityResultLauncher.launch(intent);
-
-
             }
         });
 
@@ -165,28 +148,11 @@ public class MainActivity extends AppCompatActivity {
         logging.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
-
-
-
-
-                    Intent intent = new Intent(MainActivity.this, loginView.class);
-                    startActivityForResult(intent, VARIABLE_DSFDSF0);
-
-
-
-
-
-
+                Intent intent = new Intent(MainActivity.this, loginView.class);
+                startActivityForResult(intent, VARIABLE_DSFDSF0);
             }
         });
     }
-
-
-
-
 
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -200,9 +166,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-
                                 if (auth.getCurrentUser() != null) {
-
                                     user = new users();
                                     user.getToken().subscribeOn(Schedulers.io())
                                             .observeOn(AndroidSchedulers.mainThread())
@@ -224,79 +188,80 @@ public class MainActivity extends AppCompatActivity {
 
                                                 @Override
                                                 public void onComplete() {
-                                                    try {
-                                                        sql.Login(auth.getCurrentUser().getDisplayName(),null,token, getApplicationContext()).subscribeOn(Schedulers.io())
-                                                                .observeOn(AndroidSchedulers.mainThread())
-                                                                .subscribe(new Observer<users>() {
-                                                                    @Override
-                                                                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                                                    sql.addUser(auth.getCurrentUser().getDisplayName(),auth.getCurrentUser().getEmail()).subscribeOn(Schedulers.io())
+                                                            .observeOn(AndroidSchedulers.mainThread())
+                                                            .subscribe(new Observer<Void>() {
+                                                                @Override
+                                                                public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
 
-                                                                    }
+                                                                }
 
-                                                                    @Override
-                                                                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull users users) {
-                                                                        if(users .getEmail()==null){
-                                                                            logedUser=users;
-                                                                        }else{
+                                                                @Override
+                                                                public void onNext(@io.reactivex.rxjava3.annotations.NonNull Void unused) {
 
-                                                                            logedUser=users;
-                                                                        }
+                                                                }
 
+                                                                @Override
+                                                                public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
 
-                                                                    }
+                                                                }
 
-                                                                    @Override
-                                                                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                                                                @Override
+                                                                public void onComplete() {
 
-                                                                    }
+                                                                    try {
+                                                                        sql.Login(auth.getCurrentUser().getDisplayName(),null,token, getApplicationContext()).subscribeOn(Schedulers.io())
+                                                                                .observeOn(AndroidSchedulers.mainThread())
+                                                                                .subscribe(new Observer<users>() {
+                                                                                    @Override
+                                                                                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
 
-                                                                    @Override
-                                                                    public void onComplete() {
-                                                                        if(logedUser.getEmail()==null){
-                                                                            sql.addUser(auth.getCurrentUser().getDisplayName(),auth.getCurrentUser().getEmail()).subscribeOn(Schedulers.io())
-                                                                                    .observeOn(AndroidSchedulers.mainThread())
-                                                                                    .subscribe(new Observer<Void>() {
-                                                                                        @Override
-                                                                                        public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                                                                                    }
 
+                                                                                    @Override
+                                                                                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull users users) {
+                                                                                        if(users.getEmail()==null){
+                                                                                            logedUser=users;
+                                                                                        }else{
+
+                                                                                            logedUser=users;
                                                                                         }
 
-                                                                                        @Override
-                                                                                        public void onNext(@io.reactivex.rxjava3.annotations.NonNull Void unused) {
 
-                                                                                        }
+                                                                                    }
 
-                                                                                        @Override
-                                                                                        public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                                                                                    @Override
+                                                                                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
 
-                                                                                        }
+                                                                                    }
 
-                                                                                        @Override
-                                                                                        public void onComplete() {
-                                                                                            Intent intentt = new Intent(MainActivity.this, firstLoginSplashScreen.class);
-                                                                                            intentt.putExtra("user",logedUser);
+                                                                                    @Override
+                                                                                    public void onComplete() {
+                                                                                        if(logedUser.getEmail()==null){
 
+                                                                                        }else {
+                                                                                            Intent intent = new Intent(MainActivity.this, Menu.class);
+                                                                                            intent.putExtra("user",logedUser);
+
+
+                                                                                            startActivity(intent);
                                                                                             finish();
-                                                                                            startActivity(intentt);
+
                                                                                         }
-                                                                                    });
-                                                                        }else {
-                                                                            Intent intent = new Intent(MainActivity.this, Menu.class);
-                                                                            intent.putExtra("user",logedUser);
 
-
-                                                                            startActivity(intent);
-                                                                            finish();
-
-                                                                        }
-
+                                                                                    }
+                                                                                });
+                                                                    } catch (IOException e) {
+                                                                        throw new RuntimeException(e);
+                                                                    } catch (JSONException e) {
+                                                                        throw new RuntimeException(e);
                                                                     }
-                                                                });
-                                                    } catch (IOException e) {
-                                                        throw new RuntimeException(e);
-                                                    } catch (JSONException e) {
-                                                        throw new RuntimeException(e);
-                                                    }
+
+
+                                                                }
+                                                            });
+                                                    System.out.println(auth.getCurrentUser().getDisplayName());
+
                                                 }
                                             });
 
@@ -324,17 +289,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
-
-                      if(resultCode==RESULT_OK){
-
-                               logedUser = data.getParcelableExtra("value");
-
-
-                                    System.out.println("You are logged");
-
-                      }
-
+        if(resultCode==RESULT_OK){
+            logedUser = data.getParcelableExtra("value");
+            System.out.println("You are logged");
         }
-
     }
+        }

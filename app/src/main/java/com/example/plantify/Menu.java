@@ -38,6 +38,7 @@ import com.example.plantify.Notices.Notices;
 import com.example.plantify.Notices.createNotice;
 import com.example.plantify.Notices.noticeTypes.picture.PrintNoticePicture;
 import com.example.plantify.Notices.noticeTypes.sound.noticesList;
+import com.example.plantify.charts.statistics;
 import com.example.plantify.events.Evemts;
 import com.example.plantify.events.showEvent;
 import com.example.plantify.menuContents.Profile;
@@ -410,6 +411,9 @@ String tokenm;
                      loadBarContent(new Profile(),0,"");
 
 
+                }
+                if(id==R.id.statistics){
+                    startActivity(new Intent(getApplicationContext(), statistics.class));
                 }
                 if(id==R.id.logOut){
 
