@@ -223,17 +223,17 @@ String tokenm;
         });
 
         listBar =(ProgressBar)  findViewById(R.id.listProgressBar);
-        listBar.setOnClickListener(v -> displayToolTip("Unfinished To-Do-List "+getUser().unDoneLists+"/"+toDoLists.size(),listBar,R.color.noticecolor));
+        listBar.setOnClickListener(v -> displayToolTip("Nie dokończone listy "+getUser().unDoneLists+"/"+toDoLists.size(),listBar,R.color.noticecolor));
         listTextBar = (TextView) findViewById(R.id.list_progress_text);
 
 
         eventBar =(ProgressBar)  findViewById(R.id.eventProgressBar);
-        eventBar.setOnClickListener(v -> displayToolTip("Current events "+ getUser().lastEvents+"/"+eventss.size(),eventBar, R.color.mainLogin));
+        eventBar.setOnClickListener(v -> displayToolTip("Aktualne wydarzenia "+ getUser().lastEvents+"/"+eventss.size(),eventBar, R.color.mainLogin));
         eventProgressText =  (TextView) findViewById(R.id.event_progress_text);
 
         noticeBar=(ProgressBar) findViewById(R.id.noticeProgressBar);
         noticeProgressText= (TextView) findViewById(R.id.noticeProgress_text);
-        noticeBar.setOnClickListener(v-> displayToolTip("Important Notices",noticeBar, R.color.todocolor));
+        noticeBar.setOnClickListener(v-> displayToolTip("Ważne notatki ",noticeBar, R.color.todocolor));
 
         noticesDropDown=(AutoCompleteTextView) findViewById(R.id.NoticesDropDown);
         Intent noticesIntent = new Intent(getApplicationContext(), Notices.class);
@@ -244,13 +244,13 @@ String tokenm;
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch ( parent.getItemAtPosition(position).toString()){
-                    case "Show all notices":
+                    case "Pokaż wszystkie":
 
                         noticesIntent.putExtra("user", getUser());
                         noticesIntent.putExtra("important",false);
                         startActivity(noticesIntent);
                         break;
-                    case "Show only important":
+                    case "Pokaż tylko ważne":
 
                         noticesIntent.putExtra("user", getUser());
                         noticesIntent.putExtra("important",true);
@@ -550,8 +550,8 @@ String tokenm;
     public void loadData(users user) throws InterruptedException, JSONException, IOException {
         ArrayList<String> not = new ArrayList<>();
 
-        not.add("Show all notices");
-        not.add("Show only important");
+        not.add("Pokaż wszystkie");
+        not.add("Pokaż tylko ważne");
         not.add("Pokaż notatki głosowe");
         DropDownViewAdapter notices = new DropDownViewAdapter(getApplicationContext(),not,null,getUser(),"Notice");
 

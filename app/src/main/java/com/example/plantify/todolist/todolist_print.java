@@ -51,7 +51,7 @@ public class todolist_print extends ExtendClass {
         setContentView(R.layout.activity_todolist_print);
         ToDoList lista =  getIntent().getParcelableExtra("list");
         String date =  getIntent().getStringExtra("date");
-        users user   =  getIntent().getParcelableExtra("user");
+
         ProgressBar progress = findViewById(R.id.progressBar);
         TextView title = findViewById(R.id.titleList);
         TextView progressText = findViewById(R.id.progress_text);
@@ -106,7 +106,7 @@ public class todolist_print extends ExtendClass {
                         @Override
                         public void onClick(View v) {
                             try {
-                            user.delList(getUser().getAccessToken(),lista).subscribeOn(Schedulers.io())
+                            getUser().delList(getUser().getAccessToken(),lista).subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(new Observer<Void>() {
                                         @Override

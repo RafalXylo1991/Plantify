@@ -10,10 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.example.plantify.R;
 import com.example.plantify.Models.PictureNotice.Notice;
 import com.example.plantify.Models.PictureNotice.users;
+import com.example.plantify.objects.infodialog;
 
 import org.json.JSONException;
 
@@ -112,7 +114,8 @@ public class TextNotice extends Fragment {
 
                                     @Override
                                     public void onNext(@NonNull String s) {
-                                        message=s;
+                                        infodialog info = new infodialog(s, getContext(), "Info");
+                                        info.getDialog().show();
                                     }
 
                                     @Override

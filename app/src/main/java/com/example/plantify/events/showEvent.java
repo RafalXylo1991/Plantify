@@ -22,6 +22,7 @@ import com.example.plantify.R;
 import com.example.plantify.Models.PictureNotice.Event;
 import com.example.plantify.objects.infodialog;
 import com.example.plantify.Models.PictureNotice.users;
+import com.example.plantify.todolist.todolist_print;
 import com.skydoves.balloon.ArrowPositionRules;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
@@ -145,52 +146,55 @@ public class showEvent extends ExtendClass {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
+                try {
+                    infodialog info = new infodialog("Czy napewno chcesz usunąć to wydarzenie?", showEvent.this,"Confirm");
+                    info.getYes().setBackgroundColor(getResources().getColor(R.color.delete));
+                    info.getYes().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                user.delEventSQL(user.getAccessToken(),event.getId()).subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new Observer<String>() {
+                                            @Override
+                                            public void onSubscribe(@NonNull Disposable d) {
 
-                            user.delEventSQL(user.getAccessToken(),event.getId()).subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(new Observer<String>() {
-                                        @Override
-                                        public void onSubscribe(@NonNull Disposable d) {
+                                            }
 
-                                        }
+                                            @Override
+                                            public void onNext(@NonNull String msg) {
+                                                message=msg;
+                                            }
 
-                                        @Override
-                                        public void onNext(@NonNull String msg) {
-                                            message=msg;
-                                        }
+                                            @Override
+                                            public void onError(@NonNull Throwable e) {
 
-                                        @Override
-                                        public void onError(@NonNull Throwable e) {
+                                            }
 
-                                        }
-
-                                        @Override
-                                        public void onComplete() {
+                                            @Override
+                                            public void onComplete() {
 
 
-                                            infodialog deleted = new infodialog(message.replace("\"", ""),showEvent.this,"Info");
-                                            deleted.getDialog().show();
-                                            deleted.getNo().setOnClickListener(v1 -> {
-                                                deleted.getDialog().cancel();
-                                                finish();
-                                            });
+                                                infodialog deleted = new infodialog("Usunięto wydarzenie",showEvent.this,"Info");
+                                                deleted.getDialog().show();
+                                                deleted.getNo().setOnClickListener(v1 -> {
+                                                    deleted.getDialog().cancel();
+                                                    finish();
+                                                });
 
-                                        }
-                                    });
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                                            }
+                                        });
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
-
-                    }
-                });
-
-                thread.start();
-
+                    });
+                    info.getDialog().show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         powiadomieniaSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -318,6 +322,7 @@ public class showEvent extends ExtendClass {
 
             }
         });
+
     }
 
     @Override

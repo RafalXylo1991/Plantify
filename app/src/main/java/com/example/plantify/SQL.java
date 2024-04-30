@@ -44,9 +44,10 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableEmitter;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 
-public class SQL{
+public class SQL {
 
      static users user;
+     static String serverType = "internal";
 
     public  users getUser() {
         return user;
@@ -63,7 +64,7 @@ public class SQL{
             public void subscribe(@NonNull ObservableEmitter<users> emitter) throws Throwable {
 
 
-                String url2 = "http://192.168.1.158:5000/users/login";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/login":"http://192.168.1.158:5000/users/login";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -139,7 +140,7 @@ public class SQL{
             @Override
             public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
                 try {
-                    String url2 = "http://192.168.1.158:5000/users/newUser";
+                    String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/newUser":"http://192.168.1.158:5000/users/newUser";
                     URL url = new URL(url2);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
@@ -195,7 +196,7 @@ public class SQL{
         return  Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/newUser";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/newUser":"http://192.168.1.158:5000/users/newUser";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -251,7 +252,7 @@ public class SQL{
         return  Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/updateToDoKind";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/updateToDoKind":"http://192.168.1.158:5000/users/updateToDoKind";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -305,7 +306,7 @@ public class SQL{
         return  Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/getNotify";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/getNotify":"http://192.168.1.158:5000/users/getNotify";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -358,7 +359,7 @@ public class SQL{
         return  Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/getNotify";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/getNotify":"http://192.168.1.158:5000/users/getNotify";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -438,7 +439,7 @@ public class SQL{
         });
     }
     public  void updateEventSQL(Event event, String token, int id) throws IOException, JSONException {
-        String url2 = "http://192.168.1.158:5000/users/updateEvent";
+        String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/updateEvent":"http://192.168.1.158:5000/uusers/updateEvent";
         URL url = new URL(url2);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
@@ -508,7 +509,7 @@ public class SQL{
         return Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/updateNotice";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/updateNotice":"http://192.168.1.158:5000/users/updateNotice";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("PUT");
@@ -560,7 +561,7 @@ public class SQL{
         return Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/deleteList";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/deleteList":"http://192.168.1.158:5000/users/deleteList";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("DELETE");
@@ -608,7 +609,7 @@ public class SQL{
         return Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/updateList";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/updateList":"http://192.168.1.158:5000/users/updateList";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -666,7 +667,7 @@ public class SQL{
     }
     public void addEventSQL(Event event, String token,int id) throws IOException, JSONException {
         System.out.println(event);
-        String url2 = "http://192.168.1.158:5000/users/addEvent";
+        String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/addEvent":"http://192.168.1.158:5000/users/addEvent";
         URL url = new URL(url2);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
@@ -736,7 +737,7 @@ public class SQL{
         return Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/addList";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/addList":"http://192.168.1.158:5000/users/addList";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -806,7 +807,7 @@ public class SQL{
         return Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/addNotice";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/addNotice":"http://192.168.1.158:5000/users/addNotice";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -822,16 +823,9 @@ public class SQL{
                 jsonParam.put("subject", notice.getSubject());
                 jsonParam.put("description", notice.getText());
                 jsonParam.put("isimportant", notice.getImportant());
-
-
-
-
-                System.out.println(jsonParam.toString());
                 DataOutputStream os = new DataOutputStream(conn.getOutputStream());
 
                 os.writeBytes(jsonParam.toString());
-
-
                 os.flush();
                 os.close();
 
@@ -840,12 +834,6 @@ public class SQL{
 
 
 
-
-
-
-                System.out.println(String.valueOf(conn.getResponseCode()));
-                System.out.println(conn.getResponseMessage());
-                emitter.onComplete();
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 String inputLine;
                 StringBuffer response = new StringBuffer();
@@ -855,14 +843,15 @@ public class SQL{
                 }
                 in.close();
 
+                JSONObject result = new JSONObject(response.toString());
+                emitter.onNext(String.valueOf(result.get("message")));
 
-                JsonObject jsonObject = new JsonParser().parse(response.toString()).getAsJsonObject();
+                emitter.onComplete();
 
 
 
 
 
-             emitter.onNext(jsonObject.get("message").toString());
 
             }
         });
@@ -900,7 +889,7 @@ public class SQL{
         return Observable.create(new ObservableOnSubscribe<Event>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Event> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/getEvent";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/getEvent":"http://192.168.1.158:5000/users/getEvent";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -989,7 +978,7 @@ public class SQL{
         return  Observable.create(new ObservableOnSubscribe<ToDoList>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<ToDoList> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/getLists";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/getLists":"http://192.168.1.158:5000/users/getLists";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -1083,7 +1072,7 @@ public class SQL{
         return  Observable.create(new ObservableOnSubscribe<Notice>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Notice> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/getNotices";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/getNotices":"http://192.168.1.158:5000/users/getNotices";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -1163,7 +1152,7 @@ public class SQL{
         return Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/delEvent";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/delEvent":"http://192.168.1.158:5000/users/delEvent";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -1224,7 +1213,7 @@ public class SQL{
         return Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/logOut";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/logOut":"http://192.168.1.158:5000/users/logOut";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("DELETE");
@@ -1253,7 +1242,7 @@ public class SQL{
         return Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/updateUser";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/updateUser":"http://192.168.1.158:5000/users/updateUser";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("PUT");
@@ -1325,7 +1314,7 @@ public class SQL{
         return Observable.create(new ObservableOnSubscribe<Void>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Void> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/deleteUser";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/deleteUser":"http://192.168.1.158:5000/users/deleteUser";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("PUT");
@@ -1398,7 +1387,8 @@ public class SQL{
     }
     public void deleteNotice(String token, Notice notice) throws IOException, JSONException {
 
-        String url2 = "http://192.168.1.158:5000/users/delNotice";
+
+        String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/delNoticer":"http://192.168.1.158:5000/users/delNotice";
         URL url = new URL(url2);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("DELETE");
@@ -1466,7 +1456,7 @@ public class SQL{
             return Observable.create(new ObservableOnSubscribe<String>() {
                 @Override
                 public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
-                    String url2 = "http://192.168.1.158:5000/users/resetPassword";
+                    String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/resetPassword":"http://192.168.1.158:5000/users/resetPassword";
                     URL url = new URL(url2);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
@@ -1535,7 +1525,7 @@ public class SQL{
         return Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/sendResetKey";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/sendResetKey":"http://192.168.1.158:5000/users/sendResetKey";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -1609,7 +1599,7 @@ public class SQL{
         return Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
-                String url2 = "http://192.168.1.158:5000/users/setPassword";
+                String url2 = serverType.equals("external")?"https://obronaapi-2.onrender.com/users/setPassword":"http://192.168.1.158:5000/users/users/setPassword";
                 URL url = new URL(url2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");

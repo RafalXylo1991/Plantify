@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ExtendClass extends AppCompatActivity {
     private static Time time = new Time();
-    protected static String serverType = "external";
+
 
     private static eventHandlers events = new eventHandlers();
     private static users user = new users();
